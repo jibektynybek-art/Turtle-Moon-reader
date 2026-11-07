@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Turtle Moon — Interactive Reader & Vocabulary</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                        child: ['Comic Neue', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+
+        /* Interactive Word Styling */
+        .word-token {
+            display: inline-block;
+            padding: 2px 3px;
+            margin: 0 1px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            touch-action: manipulation;
+        }
+        
+        .theme-light .word-token:hover, .theme-light .word-token:active {
+            background-color: #E0F2FE;
+            color: #0369A1;
+        }
+        .theme-dark .word-token:hover, .theme-dark .word-token:active {
+            background-color: #1E3A8A;
+            color: #93C5FD;
+        }
+
+        /* Highlight special terms */
+        .word-token[data-animal="true"] {
+            border-bottom: 2px dashed #10B981;
+            font-weight: 500;
+        }
+
+        /* Theme Styles */
+        body.theme-light {
+            background-color: #F8FAFC;
+            color: #000000;
+        }
+        /* Light theme: all grey text becomes black */
+        .theme-light .text-gray-400,
+        .theme-light .text-gray-500,
+        .theme-light .text-gray-600,
+        .theme-light .text-gray-700,
+        .theme-light .text-gray-800,
+        .theme-light .text-black,
+        .theme-light #readerText {
+            color: #000000 !important;
+        }
+        body.theme-dark {
+            background-color: #0F172A;
+            color: #E2E8F0;
+        }
+
+        .card-theme {
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .theme-light .card-theme {
+            background-color: #FFFFFF;
+            border-color: #E2E8F0;
+            color: #000000;
+        }
+        .theme-dark .card-theme {
+            background-color: #1E293B;
+            border-color: #334155;
+            color: #F8FAFC;
+        }
+
+        /* Modal backdrop animation */
+        .modal-animate {
+            animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+    </style>
+</head>
+<body class="theme-light font-sans antialiased min-h-screen flex flex-col md:flex-row select-none">
+
+    <!-- Mobile Top Header -->
+    <header class="md:hidden flex items-center justify-between p-4 card-theme border-b sticky top-0 z-20">
+        <div class="flex items-center space-x-3">
+            <button id="toggleSidebarMobile" class="p-2 rounded-lg bg-emerald-600 text-white text-lg">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <h1 class="font-bold text-lg tracking-wide text-emerald-700 dark:text-emerald-400">Turtle Moon Reader</h1>
+        </div>
+        <div class="flex items-center space-x-2">
+            <button onclick="switchTab('quiz')" class="px-3 py-1.5 bg-amber-500 text-white rounded-lg text-sm font-semibold flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-trophy"></i> Викторина
+            </button>
+        </div>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-72 card-theme border-r transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col h-full shadow-lg md:shadow-none">
+        <!-- Sidebar Header -->
+        <div class="p-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-emerald-700 text-white">
+            <div>
+                <span class="text-xs font-semibold uppercase tracking-wider text-emerald-200">Подготовка к конкурсу</span>
+                <h2 class="text-xl font-extrabold flex items-center gap-2">
+                    <i class="fa-solid fa-book-open-reader"></i> Turtle Moon
+                </h2>
+                <span class="text-xs bg-emerald-800 px-2 py-0.5 rounded text-emerald-100">Уровень B1-B2 → A2</span>
+            </div>
+            <button id="closeSidebarMobile" class="md:hidden text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- App Mode Tabs -->
+        <div class="p-3 grid grid-cols-3 gap-1 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 text-xs font-medium">
+            <button onclick="switchTab('reader')" id="tabBtnReader" class="py-2 rounded-md bg-white dark:bg-gray-700 text-emerald-600 dark:text-emerald-400 font-bold shadow-sm flex flex-col items-center gap-1">
+                <i class="fa-solid fa-book text-base"></i> Текст
+            </button>
+            <button onclick="switchTab('vocab')" id="tabBtnVocab" class="py-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-white/50 flex flex-col items-center gap-1 relative">
+                <i class="fa-solid fa-bookmark text-base"></i> Словарь
+                <span id="vocabBadge" class="hidden absolute top-1 right-2 bg-emerald-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+            </button>
+            <button onclick="switchTab('quiz')" id="tabBtnQuiz" class="py-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-white/50 flex flex-col items-center gap-1">
+                <i class="fa-solid fa-circle-question text-base"></i> Тесты
+            </button>
+        </div>
+
+        <!-- Chapters List -->
+        <div class="flex-1 overflow-y-auto p-3 space-y-1">
+            <div class="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Главы книги</div>
+            
+            <a href="#" onclick="loadChapter(17); return false;" class="chapter-link active flex items-center justify-between p-3 rounded-xl bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-200 border-2 border-emerald-500/40 font-semibold shadow-sm">
+                <div class="flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">17</span>
+                    <div>
+                        <div class="text-sm leading-tight">The Leatherback</div>
+                        <div class="text-[11px] opacity-75 font-normal">Кожаная черепаха</div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-xs text-emerald-600"></i>
+            </a>
+
+            <!-- Locked Chapters (Placeholders) -->
+            <div class="opacity-50 space-y-1 pt-2">
+                <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-800/40 text-gray-500 text-sm">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 flex items-center justify-center text-xs font-bold">18</span>
+                        <span>Chapter 18 (Locked)</span>
+                    </div>
+                    <i class="fa-solid fa-lock text-xs"></i>
+                </div>
+                <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-800/40 text-gray-500 text-sm">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 flex items-center justify-center text-xs font-bold">19</span>
+                        <span>Chapter 19 (Locked)</span>
+                    </div>
+                    <i class="fa-solid fa-lock text-xs"></i>
+                </div>
+                <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-800/40 text-gray-500 text-sm">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 flex items-center justify-center text-xs font-bold">20</span>
+                        <span>Chapter 20 (Locked)</span>
+                    </div>
+                    <i class="fa-solid fa-lock text-xs"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Audio Settings / US Voice Info -->
+        <div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-emerald-50/50 dark:bg-emerald-950/20 text-xs space-y-2">
+            <div class="flex items-center justify-between text-emerald-800 dark:text-emerald-300 font-semibold">
+                <span><i class="fa-solid fa-volume-high mr-1"></i> Голос озвучки:</span>
+                <span id="voiceStatusBadge" class="bg-emerald-200 dark:bg-emerald-800 text-emerald-900 dark:text-emerald-100 px-2 py-0.5 rounded text-[10px]">US Accent</span>
+            </div>
+            <p class="text-gray-500 dark:text-gray-400 text-[11px] leading-tight">
+                Нажмите на любое слово в тексте, чтобы услышать чистое американское произношение.
+            </p>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden">
+
+        <!-- Top Controls Bar (Reader Settings) -->
+        <header id="readerControls" class="p-3 card-theme border-b flex flex-wrap items-center justify-between gap-3 z-10 shadow-sm">
+            <div class="flex items-center space-x-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Тема:</span>
+                <div class="inline-flex p-1 bg-gray-200 dark:bg-gray-700 rounded-lg text-xs font-medium">
+                    <button onclick="setTheme('light')" class="theme-btn px-3 py-1 rounded-md bg-white text-gray-800 shadow-xs" data-t="light">☀️ Светлая</button>
+                    <button onclick="setTheme('dark')" class="theme-btn px-3 py-1 rounded-md text-gray-300" data-t="dark">🌙 Темная</button>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <div class="flex items-center space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
+                    <button onclick="changeFontSize(-2)" class="w-8 h-8 rounded bg-white dark:bg-gray-700 text-sm font-bold shadow-xs hover:bg-gray-50 active:scale-95">A-</button>
+                    <span id="fontSizeDisplay" class="text-xs px-2 font-mono">18px</span>
+                    <button onclick="changeFontSize(2)" class="w-8 h-8 rounded bg-white dark:bg-gray-700 text-sm font-bold shadow-xs hover:bg-gray-50 active:scale-95">A+</button>
+                </div>
+                <button onclick="openHelpModal()" class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300 flex items-center justify-center font-bold text-sm">
+                    <i class="fa-solid fa-question"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- VIEW 1: READER CONTAINER -->
+        <div id="viewReader" class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6">
+            <div class="max-w-3xl mx-auto space-y-6">
+                <!-- Chapter Header -->
+                <div class="text-center pb-6 border-b border-gray-200 dark:border-gray-800">
+                    <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400 tracking-wider uppercase">Chapter Seventeen</span>
+                    <h1 class="text-3xl md:text-4xl font-extrabold font-serif mt-1">The Leatherback</h1>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 italic">Нажмите на любое слово (кроме имён собственных), чтобы узнать перевод и услышать произношение</p>
+                </div>
+
+                <!-- Text Body -->
+                <article id="readerText" class="font-serif leading-relaxed space-y-5 text-black dark:text-gray-200" style="font-size: 18px;">
+                    <!-- Content will be injected dynamically with tokenized words -->
+                </article>
+            </div>
+        </div>
+
+        <!-- VIEW 2: VOCABULARY SAVED WORDS -->
+        <div id="viewVocab" class="hidden flex-1 overflow-y-auto p-4 md:p-8">
+            <div class="max-w-3xl mx-auto space-y-6">
+                <div class="flex items-center justify-between pb-4 border-b">
+                    <div>
+                        <h2 class="text-2xl font-bold font-serif">Мой словарь</h2>
+                        <p class="text-sm text-gray-500">Слова, сохраненные во время чтения 17 главы</p>
+                    </div>
+                    <button onclick="clearVocab()" class="text-xs text-red-500 hover:underline">Очистить весь словарь</button>
+                </div>
+
+                <div id="vocabList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Saved word cards injected here -->
+                </div>
+
+                <div id="vocabEmpty" class="text-center py-12 space-y-3">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl">
+                        <i class="fa-solid fa-bookmark"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">Словарь пока пуст</h3>
+                    <p class="text-sm text-gray-500 max-w-sm mx-auto">Нажимайте на незнакомые слова во время чтения и нажимайте кнопку <strong>«+ В словарь»</strong></p>
+                    <button onclick="switchTab('reader')" class="px-4 py-2 bg-emerald-600 text-white rounded-lg text-sm font-semibold shadow-md">Вернуться к чтению</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 3: QUIZ FOR CONTEST PREP -->
+        <div id="viewQuiz" class="hidden flex-1 overflow-y-auto p-4 md:p-8">
+            <div class="max-w-2xl mx-auto space-y-6">
+                <div class="text-center space-y-2">
+                    <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase">Подготовка к конкурсу</span>
+                    <h2 class="text-2xl md:text-3xl font-extrabold">Викторина по Chapter 17</h2>
+                    <p class="text-sm text-gray-500">Проверь, насколько хорошо ты понял сюжет и детали 17-й главы!</p>
+                </div>
+
+                <!-- Quiz Progress -->
+                <div class="bg-gray-200 dark:bg-gray-700 h-2.5 rounded-full overflow-hidden">
+                    <div id="quizProgressBar" class="bg-amber-500 h-full w-0 transition-all duration-300"></div>
+                </div>
+
+                <!-- Quiz Card Container -->
+                <div id="quizContainer" class="card-theme border p-6 rounded-2xl shadow-md space-y-6">
+                    <!-- Questions loaded via JS -->
+                </div>
+
+                <!-- Quiz Results (Hidden initially) -->
+                <div id="quizResults" class="hidden card-theme border p-8 rounded-2xl text-center space-y-6">
+                    <div class="w-20 h-20 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto text-3xl">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-extrabold">Отличный результат!</h3>
+                        <p class="text-gray-500 text-sm mt-1">Твой результат в викторине:</p>
+                        <div id="quizScoreText" class="text-4xl font-black text-amber-500 mt-2">0 / 10</div>
+                    </div>
+                    <p id="quizFeedback" class="text-sm font-medium text-gray-600 dark:text-gray-300 max-w-md mx-auto"></p>
+                    <button onclick="restartQuiz()" class="px-6 py-3 bg-emerald-600 text-white font-bold rounded-xl shadow-lg hover:bg-emerald-700 transition-all">
+                        <i class="fa-solid fa-rotate-right mr-2"></i> Пройти еще раз
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- WORD DICTIONARY MODAL / DIALOG -->
+    <div id="wordModal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-xs flex items-end md:items-center justify-center p-0 md:p-4">
+        <div class="modal-animate w-full md:max-w-md card-theme rounded-t-3xl md:rounded-2xl shadow-2xl overflow-hidden border max-h-[85vh] flex flex-col">
+            
+            <!-- Modal Header -->
+            <div class="p-4 bg-emerald-600 text-white flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <button onclick="speakCurrentWord()" class="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-xl text-white transition-all active:scale-95 shadow-sm" title="Прослушать произношение">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                    <div>
+                        <h3 id="modalWord" class="text-2xl font-bold font-serif leading-tight">Word</h3>
+                        <span id="modalPhonetic" class="text-xs text-emerald-100 opacity-90">[ pronunciation ]</span>
+                    </div>
+                </div>
+                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-black/20 hover:bg-black/30 flex items-center justify-center text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content (Scrollable) -->
+            <div class="p-5 overflow-y-auto space-y-4 text-left">
+
+                <!-- Image preview (If Animal or Object) -->
+                <div id="modalImageContainer" class="hidden rounded-xl overflow-hidden border border-emerald-500/20 bg-emerald-50/50 dark:bg-emerald-950/30">
+                    <img id="modalImage" src="" alt="Animal Image" class="w-full h-44 object-cover" referrerpolicy="no-referrer" onerror="document.getElementById('modalImageContainer').classList.add('hidden')">
+                    <div id="modalImageCaption" class="p-2 text-center text-xs font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-100/50 dark:bg-emerald-900/40"></div>
+                </div>
+
+                <!-- Contextual Translation (Highlight) -->
+                <div class="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400 block mb-1">
+                        <i class="fa-solid fa-bullseye mr-1"></i> Перевод слова:
+                    </span>
+                    <p id="modalContextTrans" class="text-lg font-bold text-amber-950 dark:text-amber-200">Перевод...</p>
+                </div>
+
+                <!-- Sentence translation -->
+                <div id="modalSentenceBlock" class="hidden p-3 rounded-xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700 space-y-1">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 block">Предложение из текста:</span>
+                    <p id="modalSentenceEn" class="text-sm italic font-serif"></p>
+                    <p id="modalSentenceRu" class="text-sm font-medium"></p>
+                </div>
+
+                <!-- General Dictionary Definitions -->
+                <div class="space-y-1">
+                    <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Другие значения слова:</span>
+                    <ul id="modalDictMeanings" class="text-sm space-y-1 text-gray-600 dark:text-gray-300 list-disc list-inside pl-1">
+                        <!-- Standard translations -->
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer Actions -->
+            <div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 flex gap-3">
+                <button id="modalSaveBtn" onclick="toggleSaveCurrentWord()" class="flex-1 py-3 bg-emerald-600 text-white rounded-xl font-bold shadow-md hover:bg-emerald-700 flex items-center justify-center gap-2 active:scale-95 transition-all">
+                    <i class="fa-solid fa-bookmark"></i> <span id="saveBtnText">Сохранить в словарь</span>
+                </button>
+                <button onclick="speakCurrentWord()" class="px-4 py-3 bg-amber-500 text-white rounded-xl font-bold shadow-md hover:bg-amber-600 flex items-center justify-center gap-2 active:scale-95">
+                    <i class="fa-solid fa-volume-high"></i> US
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="helpModal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="w-full max-w-md card-theme rounded-2xl p-6 space-y-4 border shadow-2xl">
+            <h3 class="text-xl font-bold flex items-center gap-2 text-emerald-600">
+                <i class="fa-solid fa-circle-info"></i> Как пользоваться сайтом?
+            </h3>
+            <ul class="text-sm space-y-3 text-gray-600 dark:text-gray-300">
+                <li class="flex items-start gap-2.5">
+                    <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">1</span>
+                    <span><strong>Нажимайте на любое слово</strong> в тексте главы, чтобы мгновенно увидеть перевод и прослушать его произношение.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                    <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">2</span>
+                    <span>Слова с зеленой пунктирной линией — это <strong>животные и рептилии Коста-Рики</strong>. Нажмите на них, чтобы увидеть картинку!</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                    <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">3</span>
+                    <span>Сохраняйте трудной лексику в <strong>«Мой словарь»</strong> для повторения.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                    <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-700 font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">4</span>
+                    <span>Перейдите в раздел <strong>«Викторина»</strong>, чтобы проверить знания перед школьным конкурсом!</span>
+                </li>
+            </ul>
+            <button onclick="document.getElementById('helpModal').classList.add('hidden')" class="w-full py-2.5 bg-emerald-600 text-white rounded-xl font-bold mt-2">Понятно!</button>
+        </div>
+    </div>
+
+    <!-- JS Logic -->
+    <script>
+        /* ==========================================================================
+           1. DATA DICTIONARIES (CHAPTER 17 SPECIALIZED VOCABULARY & TRANSLATIONS)
+           ========================================================================== */
+        
+        // Dictionary database mapping clean lowercase words to rich contextual data
+        const dictionaryData = {
+            "leatherback": {
+                context: "Кожаная черепаха (самая крупная морская черепаха в мире)",
+                meanings: ["кожаная черепаха", "кожистая черепаха"],
+                image: "https://www.sanblasfrontera.com/wp-content/uploads/2023/05/e5c98f1e-cb1b-44a5-a584-be296cb7ca2d.jpg",
+                caption: "Кожаная черепаха (Leatherback turtle) — достигает 2 метров в длину!",
+                phonetic: "/ˈleðə(r)bæk/"
+            },
+            "leafcutter": {
+                context: "Муравьи-листорезы (тропические муравьи, несущие кусочки листьев)",
+                meanings: ["листорез", "муравей-листорез"],
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSu3CNhjIvwhl1YCiMst-dvRnIlzLuyuTc94q-vLXqsw&s=10",
+                caption: "Муравьи-листорезы (Leafcutter ants) несущие части листьев в муравейник",
+                phonetic: "/ˈliːfˌkʌtə(r)/"
+            },
+            "chameleon": {
+                context: "Хамелеон (ящерица, меняющая окрас кожи)",
+                meanings: ["хамелеон"],
+                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Bradypodion_pumilum_Cape_chameleon_female_IMG_1767_(cropped).jpg?width=800",
+                caption: "Хамелеон — ящерица, которая умеет менять цвет кожи",
+                phonetic: "/kəˈmiːliən/"
+            },
+            "lizard": {
+                context: "Ящерица",
+                meanings: ["ящерица"],
+                image: "https://images.unsplash.com/photo-1508873696983-2df515122519?auto=format&fit=crop&w=600&q=80",
+                caption: "Тропическая ящерица",
+                phonetic: "/ˈlɪzərd/"
+            },
+            "jellyfish": {
+                context: "Медузы (основная еда кожаных черепах)",
+                meanings: ["медуза"],
+                image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80",
+                caption: "Медузы в океане",
+                phonetic: "/ˈdʒeli.fɪʃ/"
+            },
+            "treehouse": {
+                context: "Домик на дереве",
+                meanings: ["дом на дереве", "деревянная хижина в ветвях"],
+                phonetic: "/ˈtriː.haʊs/"
+            },
+            "fiercely": {
+                context: "Яростно / Отчаянно / Настойчиво",
+                meanings: ["яростно", "свирепо", "сильно", "отчаянно"],
+                phonetic: "/ˈfɪərs.li/"
+            },
+            "bark": {
+                context: "Кора дерева",
+                meanings: ["кора дерева", "лай собаки", "лаять"],
+                phonetic: "/bɑːrk/"
+            },
+            "scraped": {
+                context: "Поцарапала / Обдрала (кожу)",
+                meanings: ["скоблить", "царапать", "счищать"],
+                phonetic: "/skreɪpt/"
+            },
+            "shins": {
+                context: "Голени (передняя часть ноги ниже колена)",
+                meanings: ["голень", "передняя часть голени"],
+                phonetic: "/ʃɪnz/"
+            },
+            "twig": {
+                context: "Веточка / Прутик",
+                meanings: ["веточка", "побег", "прут"],
+                phonetic: "/twɪɡ/"
+            },
+            "scuttling": {
+                context: "Семенящая / быстро бегущая (ящерица)",
+                meanings: ["суетливо бегающий", "удирающий"],
+                phonetic: "/ˈskʌt.lɪŋ/"
+            },
+            "determined": {
+                context: "Решительно настроена / Полна решимости",
+                meanings: ["решительный", "непреклонный", "уверенный"],
+                phonetic: "/dɪˈtɜːr.mɪnd/"
+            },
+            "platform": {
+                context: "Деревянный настил / Настил домика",
+                meanings: ["платформа", "настил", "пост", "перрон"],
+                phonetic: "/ˈplæt.fɔːrm/"
+            },
+            "birdsong": {
+                context: "Пение птиц",
+                meanings: ["пение птиц", "птичьи трели"],
+                phonetic: "/ˈbɜːrd.sɑːŋ/"
+            },
+            "drown": {
+                context: "Заглушить (звук сцены)",
+                meanings: ["тонуть", "заглушать (звук)", "заливать"],
+                phonetic: "/draʊn/"
+            },
+            "unfolded": {
+                context: "Развернулась / Произошла (сцена)",
+                meanings: ["раскрываться", "разворачиваться", "происходить"],
+                phonetic: "/ʌnˈfoʊl.dɪd/"
+            },
+            "froze": {
+                context: "Замерла (от неожиданности)",
+                meanings: ["замер", "застыл", "заморозился"],
+                phonetic: "/froʊz/"
+            },
+            "rustled": {
+                context: "Прошелестело / Зашуршало",
+                meanings: ["шелестеть", "шуршать"],
+                phonetic: "/ˈrʌs.əld/"
+            },
+            "gloopy": {
+                context: "Густой, липкий и душный (воздух джунглей)",
+                meanings: ["тягучий", "густой", "липкий"],
+                phonetic: "/ˈɡluː.pi/"
+            },
+            "shimmied": {
+                context: "Проползла / Продвинулась трением",
+                meanings: ["двигаться из стороны в сторону", "скользить", "пролезать"],
+                phonetic: "/ˈʃɪm.iːd/"
+            },
+            "coarse": {
+                context: "Шероховатый / Грубый (деревянный настил)",
+                meanings: ["грубый", "шероховатый", "необработанный"],
+                phonetic: "/kɔːrs/"
+            },
+            "splinters": {
+                context: "Занозы",
+                meanings: ["заноза", "осколок", "щепка"],
+                phonetic: "/ˈsplɪn.tərz/"
+            },
+            "boulder": {
+                context: "Валун / Огромный камень",
+                meanings: ["валун", "крупный камень"],
+                phonetic: "/ˈboʊl.dər/"
+            },
+            "heaving": {
+                context: "Тяжело продвигаясь / Переваливаясь",
+                meanings: ["поднимать с трудом", "тяжело дышать", "переваливаться"],
+                phonetic: "/ˈhiː.vɪŋ/"
+            },
+            "flippers": {
+                context: "Ласты (черепахи)",
+                meanings: ["ласты морского животного", "плавники"],
+                phonetic: "/ˈflɪp.ərz/"
+            },
+            "tortoiseshell": {
+                context: "Панцирный / Черепаховый окрас",
+                meanings: ["черепаховый панцирь", "пестрый черепаховый окрас"],
+                phonetic: "/ˈtɔːrtəs.ʃel/"
+            },
+            "enormous": {
+                context: "Огромная / Громадная",
+                meanings: ["огромный", "громадный", "колоссальный"],
+                phonetic: "/ɪˈnɔːr.məs/"
+            },
+            "rubbery": {
+                context: "Резиновый / Плотный и упругий на ощупь",
+                meanings: ["резиновый", "упругий"],
+                phonetic: "/ˈrʌb.ər.i/"
+            },
+            "majestic": {
+                context: "Величественная / Царственная",
+                meanings: ["величественный", "грандиозный"],
+                phonetic: "/məˈdʒes.tɪk/"
+            },
+            "noble": {
+                context: "Благородная",
+                meanings: ["благородный", "знатный"],
+                phonetic: "/ˈnoʊ.bəl/"
+            },
+            "stilled": {
+                context: "Замерла на месте / Погрузилась в тишину",
+                meanings: ["успокаиваться", "замирать"],
+                phonetic: "/stɪld/"
+            },
+            "hovering": {
+                context: "Зависшая / Нависающая над ямкой",
+                meanings: ["парить", "зависать в воздухе", "колебаться"],
+                phonetic: "/ˈhʌv.ər.ɪŋ/"
+            },
+            "sparkies": {
+                context: "Электрики (сленг на английском)",
+                meanings: ["электрики (разговорное)"],
+                phonetic: "/ˈspɑːr.kiz/"
+            },
+            "gauge": {
+                context: "Оценить / Измерить (время)",
+                meanings: ["измерять", "оценивать", "калибровать"],
+                phonetic: "/ɡeɪdʒ/"
+            },
+            "subtlest": {
+                context: "Самые тонкие / Еле заметные (сдвиги)",
+                meanings: ["самый тонкий", "едва уловимый"],
+                phonetic: "/ˈsʌt.əl.ɪst/"
+            },
+            "creation": {
+                context: "Творение / Создание природы",
+                meanings: ["создание", "творение", "мироздание"],
+                phonetic: "/kriˈeɪ.ʃən/"
+            },
+            "ecosystem": {
+                context: "Экосистема природы",
+                meanings: ["экосистема"],
+                phonetic: "/ˈiː.koʊˌsɪs.təm/"
+            },
+            "injustice": {
+                context: "Несправедливость",
+                meanings: ["несправедливость", "обида"],
+                phonetic: "/ɪnˈdʒʌs.tɪs/"
+            },
+            "tendrils": {
+                context: "Пряди / Завитки (волос)",
+                meanings: ["усики растений", "пряди волос", "завитки"],
+                phonetic: "/ˈten.drəlz/"
+            }
+        };
+
+        // Text content for Chapter 17
+        const chapter17RawText = `Chapter Seventeen. The Leatherback.
+
+Silver had never climbed a tree so fiercely as she did this one. It didn’t matter that the bark scraped her bare shins, or that a twig practically poked her eye out, or even that a scuttling lizard almost made her fall off. She was determined to get to the top. To a place where no one could find her.
+
+Once in the safety of the treehouse, she curled up in a ball on the wooden platform. Up here, the rainforest was so alive with birdsong it was like a chorus. But still not loud enough to drown out the scene that had just unfolded. Why was it that whatever Silver did it was never enough? Why was she never enough?
+
+Silver rubbed the tears away from her face. No. She wouldn’t cry. She wouldn’t. She wiped her face again and then froze. Something had rustled. Not the leaves. There wasn’t even a hint of a breeze today – the air was thick and gloopy. And it hadn’t come from the tree anyway. The noise had come from below. Was it Rafi? No. He’d still be at school.
+
+There it was again. ‘Speedy?’
+
+Unlikely. Rafi tended to take Speedy to school with him, hidden in his rucksack. But you never knew. Speedy had escaped before, after all.
+
+Silver shimmied across the treehouse so she ended up peering over the edge. The coarse wooden platform left splinters in her knees, but she couldn’t see anything apart from leaves and branches and an annoying lock of her hair.
+
+Then she caught sight of something out of the corner of her eye. Something extraordinary. A giant turtle.
+
+It was the biggest turtle Silver had ever seen. Far bigger than Luna even. The size of a boulder. A boulder that was gradually heaving its way across the sand directly towards her. As it walked, it dragged its flippers in the sand behind it, making a scraping noise.
+
+This turtle wasn’t green or tortoiseshell. It was an inky blue colour with tiny white dots, like stars, coating its entire body, including the two huge front flippers.
+
+Silver breathed out. ‘A leatherback.’
+
+Rafi had said they hadn’t been seen on Turtle Beach for two years. And yet – Silver rubbed her eyes – this was most definitely a leatherback. It was ENORMOUS and it had the characteristic markings. Most significantly of all, Silver could see that its upper body – the part where the shell ought to be – wasn’t hard and bony like the turtles at the centre. Instead, it looked almost rubbery to the touch.
+
+‘A leathery back . . .’
+
+[BOOK_ILLUSTRATION]
+
+She remembered, guiltily now, laughing at how Rafi had described why they were so called. But there was nothing funny about this turtle. It was majestic. And noble. And heading her way.
+
+The turtle paused on the sand, as if somehow aware that Silver was watching. It stilled. Its head poked out of the shell and tuned into the air around it like an antenna. Silver held her breath. Then it resumed its progress, slowly inching its way forward until it came to a halt right under the tree.
+
+Using its flippers, it started making a hole in the sand. This went on for some time before eventually the turtle paused, hovering over the hole. If Rafi hadn’t shown her how turtles laid their eggs, she would have had no idea what was happening. But this had to be what the leatherback was doing.
+
+Not that Silver could see the eggs. It was difficult with a boulder-sized turtle blocking the view. She adjusted her position – her elbows and knees sore – and kept looking.
+
+What a shame that Rafi was missing this! How come she was the one witnessing the eggs being born? It didn’t seem fair. But he wasn’t here. And neither, it seemed, was anyone else. Where was Ana? She had a sixth sense when it came to nesting turtles and was always the first on the scene. Silver knew José had gone into the local village for the weekly provisions shop.
+
+As for Oscar and the handful of sparkies, they must be working on-site.
+
+The only person here was Silver. And she would do her best not to disturb the turtle. The most precious and rare and endangered turtle of them all.
+
+She chewed her lip anxiously. It was a strange feeling to know that she was watching life begin. Actual life.
+
+Once upon a time, this had been her too. Obviously, she hadn’t been born a turtle. Nor had she begun her existence encased in an egg. (Unless it had been a very big one!) But it was the same process. This infinite, sacred unfolding. She knew, on some deep level where all truth lives, that the turtle was giving Silver the greatest honour, just to be present in this moment.
+
+The egg laying went on for quite a while. It was hard to gauge exactly how long. Silver had left in such a hurry that she’d forgotten her watch. Oh well. She was on jungle time now anyway. After fifteen monkey screeches, the time it took for an army of leafcutter ants to march across the platform three times and a costume change from a chameleon, the mother leatherback appeared to be finished.
+
+It wasn’t obvious. At least not at first. But Silver had been watching her so intently that she picked up on the subtlest of shifts. It was as if the turtle had relaxed momentarily. Had tuned out from the existence of creation and returned to the earthly plane.
+
+‘Well done,’ she whispered. ‘Well done, you clever, clever thing.’
+
+Because it was clever to give birth. Even though a turtle was different to a human, in that moment Silver had a sharp, clear insight into why her mother craved a second chance at it so much. Maybe it wasn’t just about the possibility of another child. Maybe it was about experiencing this. Whatever this was. The feeling you were part of creation energy itself.
+
+As if sensing her thoughts, the turtle looked up and gazed through the branches all the way up to the treehouse. To where a curious, frizzy-haired girl was gazing back down. The girl and the turtle held each other’s gaze. A gaze that travelled back to the time of the dinosaurs.
+
+It wasn’t just a look though. It was a question. From one living being to another.
+
+‘You want me to help?’
+
+The turtle inclined her head ever so gently. So gently it might just have been a figment of Silver’s imagination. But nevertheless she nodded back.
+
+‘I’ll do that for you,’ she whispered. ‘I’ll look after your eggs. I promise.’
+
+Any extinct animal was a loss to the world’s delicate ecosystem. Silver now knew that most turtles fed on jellyfish and that, without the turtles, the jellyfish numbers would increase, and it was subtle imbalances like this that upset the entire make-up of the ocean. But it wasn’t just about the ecosystem.
+
+To lose any animal – especially due to human impact – was a terrible injustice.
+
+The turtle kept her gaze pinned upwards. Then she blinked. Turned her head. And slowly crawled back across the beach to the ocean’s edge.
+
+Silver’s eyes were glued to her the entire time. Somewhere close by, a monkey screeched. And the chameleon changed colour once again.
+
+The turtle slipped into the water, swallowed up by the blue surf. Silver could still see her, a dark shadow under the surface, swimming further and further out to sea. Until finally she disappeared.
+
+But still Silver watched, her eyes squinting against the hard, bright sun. Tendrils of hair glued to the back of her neck. She slowly stood upright, unkinking all the knots in her body where she had lain still for so long. Then she brushed some dried blood off her knees and scrambled down the tree and ran to get help.`;
+
+        // Contest Quiz Questions
+        const quizQuestions = [
+            {
+                q: "Why did Silver climb the tree in the beginning of the story?",
+                options: [
+                    "To find her pet lizard, Speedy",
+                    "To get away from her brother, Rafi",
+                    "To get to a place where no one could find her",
+                    "To watch for nesting leatherback turtles"
+                ],
+                correct: 2
+            },
+            {
+                q: "What was the weather like when Silver climbed into the treehouse?",
+                options: [
+                    "Cool and breezy with a light rain",
+                    "Thick, gloopy, and without a hint of a breeze",
+                    "Extremely cold with a heavy mist",
+                    "Windy and stormy with dark clouds rolling in"
+                ],
+                correct: 1
+            },
+            {
+                q: "What did Silver initially suspect was making the rustling noise below?",
+                options: [
+                    "A wild monkey",
+                    "Her friend Ana",
+                    "Her brother Rafi or his pet Speedy",
+                    "A stray dog from the local village"
+                ],
+                correct: 2
+            },
+            {
+                q: "What kind of animal did Silver spot coming out of the sand?",
+                options: [
+                    "A giant leatherback turtle",
+                    "A green sea turtle",
+                    "A tortoiseshell turtle named Luna",
+                    "A massive saltwater crocodile"
+                ],
+                correct: 0
+            },
+            {
+                q: "How did Silver describe the appearance of the turtle’s shell area?",
+                options: [
+                    "Hard, bony, and dark green",
+                    "Soft, wrinkled, and pale brown",
+                    "Almost rubbery to the touch instead of hard and bony",
+                    "Covered in sharp, spiky ridges like a boulder"
+                ],
+                correct: 2
+            },
+            {
+                q: "Where had José gone while Silver was at the treehouse?",
+                options: [
+                    "To the school to pick up Rafi",
+                    "Into the local village for the weekly provisions shop",
+                    "To the turtle conservation centre",
+                    "To help the sparkies working on-site"
+                ],
+                correct: 1
+            },
+            {
+                q: "How did Silver roughly measure the passage of time while watching the turtle?",
+                options: [
+                    "By counting down minutes on her wristwatch",
+                    "By listening to the school bell ring in the distance",
+                    "By using natural occurrences like monkey screeches and an army of leafcutter ants",
+                    "By waiting for the sun to set below the horizon"
+                ],
+                correct: 2
+            },
+            {
+                q: "What realization did Silver have about her mother while watching the turtle give birth?",
+                options: [
+                    "Why her mother wanted to move away from the beach",
+                    "Why her mother craved a second chance at having a child and experiencing creation energy",
+                    "Why her mother always forgot to bring provisions home from the village",
+                    "Why her mother spent so much time helping the sparkies"
+                ],
+                correct: 1
+            },
+            {
+                q: "What silent exchange happened between Silver and the turtle before the turtle left?",
+                options: [
+                    "They stared at each other, and Silver felt the turtle asking a question that she answered with a promise to look after the eggs",
+                    "The turtle hissed at Silver to drive her away from the nest",
+                    "Silver threw a leaf down to get the turtle's attention",
+                    "The turtle nodded goodbye and shed visible tears"
+                ],
+                correct: 0
+            },
+            {
+                q: "What did Silver do immediately after the turtle slipped back into the ocean?",
+                options: [
+                    "She fell asleep on the wooden platform of the treehouse",
+                    "She climbed down the tree, brushed dried blood off her knees, and ran to get help",
+                    "She searched the sand for dropped turtle scales",
+                    "She went back inside to find her missing watch"
+                ],
+                correct: 1
+            }
+        ];
+
+        /* ==========================================================================
+           2. STATE & APPLICATION INITIALIZATION
+           ========================================================================== */
+        let currentFontSize = 18;
+        let activeWordData = null;
+        let savedVocabulary = JSON.parse(localStorage.getItem('turtle_moon_vocab') || '[]');
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+
+        window.onload = function() {
+            setTheme(localStorage.getItem('turtle_moon_theme') === 'dark' ? 'dark' : 'light');
+            renderChapter17Text();
+            updateVocabUI();
+            initQuiz();
+            
+            // Check Web Speech API Support
+            if (!('speechSynthesis' in window)) {
+                document.getElementById('voiceStatusBadge').innerText = "Audio Not Supported";
+                document.getElementById('voiceStatusBadge').className = "bg-red-200 text-red-800 px-2 py-0.5 rounded text-[10px]";
+            }
+        };
+
+        /* ==========================================================================
+           3. TEXT RENDERING & INTERACTIVE TOKENIZATION
+           ========================================================================== */
+        function renderChapter17Text() {
+            const container = document.getElementById('readerText');
+            container.innerHTML = '';
+
+            const paragraphs = chapter17RawText.split('\n\n');
+            const WORD_RE = /[A-Za-zÀ-ÿ]+(?:[’'][A-Za-z]+)*/;
+
+            paragraphs.forEach(paragraph => {
+                // Check for book illustration marker
+                if (paragraph.trim() === '[BOOK_ILLUSTRATION]') {
+                    const imgDiv = document.createElement('div');
+                    imgDiv.className = "my-8 rounded-2xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700 bg-black/5";
+                    imgDiv.innerHTML = `
+                        <img src="https://res.cloudinary.com/arenaillustration/image/upload/c_limit,f_auto,q_auto,w_1920/v1726590556/Levi_Pinfold-TURTLE_MOON_leatherback_bugjea.jpg" 
+                             alt="Leatherback Turtle Illustration from Book" 
+                             class="w-full h-auto object-cover max-h-[500px]"
+                             onerror="this.src='https://placehold.co/800x450/0f172a/ffffff?text=Leatherback+Illustration'">
+                        <div class="p-3 text-center text-xs italic text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800/80">
+                            Официальная иллюстрация к 17-й главе книги "Turtle Moon" (Кожаная черепаха)
+                        </div>
+                    `;
+                    container.appendChild(imgDiv);
+                    return;
+                }
+
+                const pElem = document.createElement('p');
+                pElem.className = "mb-4";
+
+                const tokens = paragraph.split(/(\s+)/);
+                // Pre-compute base word of every token (for proper-name detection of "Turtle Beach" / "Turtle Moon")
+                const bases = tokens.map(t => {
+                    const m = t.match(WORD_RE);
+                    return m ? normalizeWord(m[0]) : '';
+                });
+                const wordIdx = tokens.map((t, i) => bases[i] ? i : -1).filter(i => i >= 0);
+
+                let offset = 0;
+                tokens.forEach((token, i) => {
+                    const tokenStart = offset;
+                    offset += token.length;
+
+                    if (/^\s+$/.test(token) || token.length === 0) {
+                        pElem.appendChild(document.createTextNode(token));
+                        return;
+                    }
+
+                    const m = token.match(WORD_RE);
+                    if (!m) {
+                        pElem.appendChild(document.createTextNode(token));
+                        return;
+                    }
+
+                    const cleanWord = bases[i];
+                    const pos = wordIdx.indexOf(i);
+                    const prev = pos > 0 ? bases[wordIdx[pos - 1]] : '';
+                    const next = pos < wordIdx.length - 1 ? bases[wordIdx[pos + 1]] : '';
+
+                    // Proper names: shown as plain text, no translation on click
+                    if (isProperName(cleanWord, prev, next)) {
+                        pElem.appendChild(document.createTextNode(token));
+                        return;
+                    }
+
+                    const span = document.createElement('span');
+                    span.className = 'word-token';
+                    span.textContent = token;
+
+                    if (["leatherback", "leafcutter", "chameleon", "lizard", "jellyfish"].includes(cleanWord)) {
+                        span.setAttribute('data-animal', 'true');
+                    }
+
+                    span.onclick = (e) => {
+                        e.stopPropagation();
+                        handleWordClick(cleanWord, m[0], getSentenceAt(paragraph, tokenStart));
+                    };
+
+                    pElem.appendChild(span);
+                });
+
+                container.appendChild(pElem);
+            });
+        }
+
+        // Lowercase word, accents removed, possessive 's removed
+        function normalizeWord(w) {
+            return w.toLowerCase()
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .replace(/[’']s$/, '');
+        }
+
+        // Proper names in chapter 17 (no translation for these)
+        const PROPER_NAMES = new Set(['silver', 'rafi', 'speedy', 'luna', 'ana', 'jose', 'oscar']);
+        function isProperName(word, prev, next) {
+            if (PROPER_NAMES.has(word)) return true;
+            // "Turtle Beach", "Turtle Moon" are place / book titles
+            if (word === 'turtle' && (next === 'beach' || next === 'moon')) return true;
+            if ((word === 'beach' || word === 'moon') && prev === 'turtle') return true;
+            return false;
+        }
+
+        // Returns the sentence of a paragraph that contains the character offset
+        function getSentenceAt(text, offset) {
+            let start = 0;
+            for (let i = offset - 1; i >= 0; i--) {
+                if ('.!?'.includes(text[i])) { start = i + 1; break; }
+            }
+            let end = text.length;
+            for (let i = offset; i < text.length; i++) {
+                if ('.!?'.includes(text[i])) { end = i + 1; break; }
+            }
+            return text.slice(start, end).replace(/^[\s‘’'"“”]+/, '').trim();
+        }
+
+        /* ==========================================================================
+           4. WORD CLICK HANDLER & DICTIONARY LOOKUP
+           ========================================================================== */
+        // Real EN -> RU translation (Google Translate web endpoint, fallback: MyMemory)
+        const translationCache = {};
+
+        async function fetchWithTimeout(url, ms = 8000) {
+            const ctrl = new AbortController();
+            const timer = setTimeout(() => ctrl.abort(), ms);
+            try {
+                const res = await fetch(url, { signal: ctrl.signal });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                return await res.json();
+            } finally {
+                clearTimeout(timer);
+            }
+        }
+
+        async function translateText(text) {
+            const key = text.toLowerCase();
+            if (translationCache[key]) return translationCache[key];
+
+            let result = null;
+            try {
+                const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ru&dt=t&dt=bd&q=' + encodeURIComponent(text);
+                const data = await fetchWithTimeout(url);
+                const main = (data[0] || []).map(s => s[0]).join('').trim();
+                const alts = [];
+                (data[1] || []).forEach(group => {
+                    (group[1] || []).slice(0, 4).forEach(w => { if (!alts.includes(w)) alts.push(w); });
+                });
+                if (main) result = { main, alts: alts.slice(0, 8) };
+            } catch (e) { /* try fallback */ }
+
+            if (!result) {
+                try {
+                    const url = 'https://api.mymemory.translated.net/get?langpair=en|ru&q=' + encodeURIComponent(text);
+                    const data = await fetchWithTimeout(url);
+                    const main = (data.responseData && data.responseData.translatedText || '').trim();
+                    const alts = [];
+                    (data.matches || []).forEach(m => {
+                        const t = (m.translation || '').trim();
+                        if (t && t.toLowerCase() !== main.toLowerCase() && !alts.includes(t) && t.length < 40) alts.push(t);
+                    });
+                    if (main) result = { main, alts: alts.slice(0, 5) };
+                } catch (e) { /* no result */ }
+            }
+
+            if (result) translationCache[key] = result;
+            return result;
+        }
+
+        let wordClickId = 0;
+
+        function renderMeanings(list) {
+            const meaningsList = document.getElementById('modalDictMeanings');
+            meaningsList.innerHTML = '';
+            list.forEach(m => {
+                const li = document.createElement('li');
+                li.innerText = m;
+                meaningsList.appendChild(li);
+            });
+        }
+
+        async function handleWordClick(cleanWord, displayWord, sentence) {
+            const myId = ++wordClickId;
+            const curated = dictionaryData[cleanWord];
+
+            activeWordData = {
+                word: displayWord,
+                cleanWord: cleanWord,
+                context: curated ? curated.context : 'Загрузка перевода…',
+                meanings: curated ? curated.meanings : [],
+                phonetic: curated ? curated.phonetic : '',
+                image: curated ? curated.image : undefined,
+                caption: curated ? curated.caption : undefined
+            };
+
+            // Populate Modal UI
+            document.getElementById('modalWord').innerText = displayWord;
+            document.getElementById('modalPhonetic').innerText = activeWordData.phonetic || '';
+            document.getElementById('modalContextTrans').innerText = activeWordData.context;
+            renderMeanings(activeWordData.meanings);
+
+            // Sentence block reset
+            const sentBlock = document.getElementById('modalSentenceBlock');
+            sentBlock.classList.add('hidden');
+
+            // Image Handler for animals/special elements
+            const imgContainer = document.getElementById('modalImageContainer');
+            if (activeWordData.image) {
+                imgContainer.classList.remove('hidden');
+                document.getElementById('modalImage').src = activeWordData.image;
+                document.getElementById('modalImageCaption').innerText = activeWordData.caption || activeWordData.word;
+            } else {
+                imgContainer.classList.add('hidden');
+            }
+
+            updateSaveBtnState();
+            speakCurrentWord();
+            document.getElementById('wordModal').classList.remove('hidden');
+
+            // Real word translation (only if not in the curated dictionary)
+            if (!curated) {
+                const tr = await translateText(displayWord);
+                if (myId !== wordClickId) return; // another word was clicked meanwhile
+                if (tr) {
+                    activeWordData.context = tr.main;
+                    activeWordData.meanings = tr.alts.length ? tr.alts : [tr.main];
+                } else {
+                    activeWordData.context = 'Не удалось загрузить перевод. Проверьте интернет-соединение.';
+                    activeWordData.meanings = [];
+                }
+                document.getElementById('modalContextTrans').innerText = activeWordData.context;
+                renderMeanings(activeWordData.meanings);
+            }
+
+            // Translation of the sentence for context
+            if (sentence && sentence.split(/\s+/).length > 1) {
+                const st = await translateText(sentence);
+                if (myId !== wordClickId) return;
+                if (st) {
+                    document.getElementById('modalSentenceEn').innerText = sentence;
+                    document.getElementById('modalSentenceRu').innerText = st.main;
+                    sentBlock.classList.remove('hidden');
+                }
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('wordModal').classList.add('hidden');
+        }
+
+        /* ==========================================================================
+           5. WEB SPEECH API (AMERICAN ENGLISH VOICE SYNTHESIS)
+           ========================================================================== */
+        function speakCurrentWord() {
+            if (!activeWordData || !('speechSynthesis' in window)) return;
+
+            window.speechSynthesis.cancel(); // Stop any ongoing speech
+
+            const utterance = new SpeechSynthesisUtterance(activeWordData.word);
+            utterance.lang = 'en-US'; // Explicit American English Accent
+            utterance.rate = 0.85; // Slightly slower for language learners A2
+
+            // Try to set explicit US Voice if browser supports voice selection
+            const voices = window.speechSynthesis.getVoices();
+            const usVoice = voices.find(v => v.lang.includes('en-US') || v.name.includes('US') || v.name.includes('American'));
+            if (usVoice) {
+                utterance.voice = usVoice;
+            }
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        /* ==========================================================================
+           6. VOCABULARY MANAGEMENT (MY DICTIONARY)
+           ========================================================================== */
+        function isWordSaved(cleanWord) {
+            return savedVocabulary.some(item => item.cleanWord === cleanWord);
+        }
+
+        function toggleSaveCurrentWord() {
+            if (!activeWordData) return;
+
+            if (isWordSaved(activeWordData.cleanWord)) {
+                savedVocabulary = savedVocabulary.filter(item => item.cleanWord !== activeWordData.cleanWord);
+            } else {
+                savedVocabulary.push({
+                    word: activeWordData.word,
+                    cleanWord: activeWordData.cleanWord,
+                    context: activeWordData.context,
+                    phonetic: activeWordData.phonetic,
+                    image: activeWordData.image
+                });
+            }
+
+            localStorage.setItem('turtle_moon_vocab', JSON.stringify(savedVocabulary));
+            updateSaveBtnState();
+            updateVocabUI();
+        }
+
+        function updateSaveBtnState() {
+            if (!activeWordData) return;
+            const saved = isWordSaved(activeWordData.cleanWord);
+            const btnText = document.getElementById('saveBtnText');
+            const btn = document.getElementById('modalSaveBtn');
+
+            if (saved) {
+                btnText.innerText = "Сохранено в словаре";
+                btn.className = "flex-1 py-3 bg-amber-600 text-white rounded-xl font-bold shadow-md hover:bg-amber-700 flex items-center justify-center gap-2 active:scale-95 transition-all";
+            } else {
+                btnText.innerText = "+ В словарь";
+                btn.className = "flex-1 py-3 bg-emerald-600 text-white rounded-xl font-bold shadow-md hover:bg-emerald-700 flex items-center justify-center gap-2 active:scale-95 transition-all";
+            }
+        }
+
+        function updateVocabUI() {
+            const list = document.getElementById('vocabList');
+            const empty = document.getElementById('vocabEmpty');
+            const badge = document.getElementById('vocabBadge');
+
+            badge.innerText = savedVocabulary.length;
+            if (savedVocabulary.length > 0) {
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            if (savedVocabulary.length === 0) {
+                list.innerHTML = '';
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            empty.classList.add('hidden');
+            list.innerHTML = '';
+
+            savedVocabulary.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "card-theme p-4 rounded-xl border shadow-xs space-y-2 relative group";
+                card.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h4 class="text-xl font-bold font-serif text-emerald-700 dark:text-emerald-400">${item.word}</h4>
+                            <span class="text-xs text-gray-400">${item.phonetic || ''}</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <button onclick="speakWordText('${item.word}')" class="p-2 text-emerald-600 hover:bg-emerald-50 rounded-lg">
+                                <i class="fa-solid fa-volume-high"></i>
+                            </button>
+                            <button onclick="removeVocab('${item.cleanWord}')" class="p-2 text-gray-400 hover:text-red-500 rounded-lg">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-sm font-medium text-gray-700 dark:text-gray-300">${item.context}</p>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function speakWordText(text) {
+            if (!('speechSynthesis' in window)) return;
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function removeVocab(cleanWord) {
+            savedVocabulary = savedVocabulary.filter(item => item.cleanWord !== cleanWord);
+            localStorage.setItem('turtle_moon_vocab', JSON.stringify(savedVocabulary));
+            updateVocabUI();
+        }
+
+        function clearVocab() {
+            if (confirm('Очистить весь список сохраненных слов?')) {
+                savedVocabulary = [];
+                localStorage.setItem('turtle_moon_vocab', JSON.stringify(savedVocabulary));
+                updateVocabUI();
+            }
+        }
+
+        /* ==========================================================================
+           7. QUIZ SYSTEM FOR CONTEST PREPARATION
+           ========================================================================== */
+        function initQuiz() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            showQuizQuestion();
+        }
+
+        function showQuizQuestion() {
+            const container = document.getElementById('quizContainer');
+            const results = document.getElementById('quizResults');
+            const progressBar = document.getElementById('quizProgressBar');
+
+            results.classList.add('hidden');
+            container.classList.remove('hidden');
+
+            const q = quizQuestions[currentQuizIndex];
+            progressBar.style.width = `${((currentQuizIndex) / quizQuestions.length) * 100}%`;
+
+            container.innerHTML = `
+                <div class="flex justify-between items-center text-xs font-bold text-gray-400 uppercase tracking-wider">
+                    <span>Вопрос ${currentQuizIndex + 1} из ${quizQuestions.length}</span>
+                    <span>Turtle Moon Викторина</span>
+                </div>
+                <h3 class="text-lg md:text-xl font-bold leading-snug">${q.q}</h3>
+                <div class="space-y-2.5 pt-2">
+                    ${q.options.map((opt, idx) => `
+                        <button onclick="checkQuizAnswer(${idx})" class="w-full text-left p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-emerald-500 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/30 font-medium transition-all text-sm flex items-center justify-between">
+                            <span><b class="mr-2">${String.fromCharCode(65 + idx)})</b>${opt}</span>
+                            <i class="fa-regular fa-circle text-gray-300"></i>
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function checkQuizAnswer(selectedIdx) {
+            const q = quizQuestions[currentQuizIndex];
+            if (selectedIdx === q.correct) {
+                quizScore++;
+            }
+
+            currentQuizIndex++;
+
+            if (currentQuizIndex < quizQuestions.length) {
+                showQuizQuestion();
+            } else {
+                showQuizResults();
+            }
+        }
+
+        function showQuizResults() {
+            const container = document.getElementById('quizContainer');
+            const results = document.getElementById('quizResults');
+            const progressBar = document.getElementById('quizProgressBar');
+
+            container.classList.add('hidden');
+            results.classList.remove('hidden');
+            progressBar.style.width = '100%';
+
+            document.getElementById('quizScoreText').innerText = `${quizScore} / ${quizQuestions.length}`;
+            
+            const feedback = document.getElementById('quizFeedback');
+            if (quizScore === quizQuestions.length) {
+                feedback.innerText = "Идеально! Ты отлично знаешь все детали 17 главы. Теперь ты на шаг ближе к победе на конкурсе!";
+            } else if (quizScore >= 7) {
+                feedback.innerText = "Хороший результат! Но прочитай главу еще раз, обращая внимание на мелкие детали.";
+            } else {
+                feedback.innerText = "Попробуй перечитать главу с нашим интерактивным словарем и пройди тест снова!";
+            }
+        }
+
+        function restartQuiz() {
+            initQuiz();
+        }
+
+        /* ==========================================================================
+           8. NAVIGATION & READER CONTROLS
+           ========================================================================== */
+        function switchTab(tab) {
+            document.getElementById('viewReader').classList.add('hidden');
+            document.getElementById('viewVocab').classList.add('hidden');
+            document.getElementById('viewQuiz').classList.add('hidden');
+
+            document.getElementById('tabBtnReader').className = "py-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-white/50 flex flex-col items-center gap-1";
+            document.getElementById('tabBtnVocab').className = "py-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-white/50 flex flex-col items-center gap-1 relative";
+            document.getElementById('tabBtnQuiz').className = "py-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-white/50 flex flex-col items-center gap-1";
+
+            if (tab === 'reader') {
+                document.getElementById('viewReader').classList.remove('hidden');
+                document.getElementById('tabBtnReader').className = "py-2 rounded-md bg-white dark:bg-gray-700 text-emerald-600 dark:text-emerald-400 font-bold shadow-sm flex flex-col items-center gap-1";
+            } else if (tab === 'vocab') {
+                document.getElementById('viewVocab').classList.remove('hidden');
+                document.getElementById('tabBtnVocab').className = "py-2 rounded-md bg-white dark:bg-gray-700 text-emerald-600 dark:text-emerald-400 font-bold shadow-sm flex flex-col items-center gap-1 relative";
+            } else if (tab === 'quiz') {
+                document.getElementById('viewQuiz').classList.remove('hidden');
+                document.getElementById('tabBtnQuiz').className = "py-2 rounded-md bg-white dark:bg-gray-700 text-emerald-600 dark:text-emerald-400 font-bold shadow-sm flex flex-col items-center gap-1";
+            }
+
+            // Close mobile sidebar if open
+            document.getElementById('sidebar').classList.add('-translate-x-full');
+        }
+
+        function setTheme(theme) {
+            if (theme !== 'light' && theme !== 'dark') theme = 'light';
+            document.body.className = `theme-${theme} font-sans antialiased min-h-screen flex flex-col md:flex-row select-none`;
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                const active = btn.dataset.t === theme;
+                btn.className = 'theme-btn px-3 py-1 rounded-md ' +
+                    (active ? 'bg-white text-gray-800 shadow-sm' : 'text-gray-600 dark:text-gray-300');
+            });
+            localStorage.setItem('turtle_moon_theme', theme);
+        }
+
+        function changeFontSize(delta) {
+            currentFontSize = Math.max(14, Math.min(28, currentFontSize + delta));
+            document.getElementById('readerText').style.fontSize = `${currentFontSize}px`;
+            document.getElementById('fontSizeDisplay').innerText = `${currentFontSize}px`;
+        }
+
+        function openHelpModal() {
+            document.getElementById('helpModal').classList.remove('hidden');
+        }
+
+        // Mobile Sidebar Toggles
+        document.getElementById('toggleSidebarMobile').onclick = () => {
+            document.getElementById('sidebar').classList.remove('-translate-x-full');
+        };
+        document.getElementById('closeSidebarMobile').onclick = () => {
+            document.getElementById('sidebar').classList.add('-translate-x-full');
+        };
+    </script>
+</body>
+</html>
