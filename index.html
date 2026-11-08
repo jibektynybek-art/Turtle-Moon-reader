@@ -162,7 +162,7 @@
         <div class="flex-1 overflow-y-auto p-3 space-y-1">
             <div class="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Главы книги</div>
             
-            <a href="#" onclick="loadChapter(17); return false;" class="chapter-link active flex items-center justify-between p-3 rounded-xl bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-200 border-2 border-emerald-500/40 font-semibold shadow-sm">
+            <a href="#" id="chapterLink17" onclick="loadChapter(17); return false;" class="chapter-link active flex items-center justify-between p-3 rounded-xl bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-200 border-2 border-emerald-500/40 font-semibold shadow-sm">
                 <div class="flex items-center gap-3">
                     <span class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">17</span>
                     <div>
@@ -173,15 +173,19 @@
                 <i class="fa-solid fa-chevron-right text-xs text-emerald-600"></i>
             </a>
 
+            <a href="#" id="chapterLink18" onclick="loadChapter(18); return false;" class="chapter-link flex items-center justify-between p-3 rounded-xl border-2 border-transparent text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 font-semibold">
+                <div class="flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">18</span>
+                    <div>
+                        <div class="text-sm leading-tight">Help!</div>
+                        <div class="text-[11px] opacity-75 font-normal">Помощь!</div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-xs text-emerald-600"></i>
+            </a>
+
             <!-- Locked Chapters (Placeholders) -->
             <div class="opacity-50 space-y-1 pt-2">
-                <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-800/40 text-gray-500 text-sm">
-                    <div class="flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-lg bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 flex items-center justify-center text-xs font-bold">18</span>
-                        <span>Chapter 18 (Locked)</span>
-                    </div>
-                    <i class="fa-solid fa-lock text-xs"></i>
-                </div>
                 <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-800/40 text-gray-500 text-sm">
                     <div class="flex items-center gap-3">
                         <span class="w-8 h-8 rounded-lg bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 flex items-center justify-center text-xs font-bold">19</span>
@@ -241,8 +245,8 @@
             <div class="max-w-3xl mx-auto space-y-6">
                 <!-- Chapter Header -->
                 <div class="text-center pb-6 border-b border-gray-200 dark:border-gray-800">
-                    <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400 tracking-wider uppercase">Chapter Seventeen</span>
-                    <h1 class="text-3xl md:text-4xl font-extrabold font-serif mt-1">The Leatherback</h1>
+                    <span id="chapterLabel" class="text-sm font-bold text-emerald-600 dark:text-emerald-400 tracking-wider uppercase">Chapter Seventeen</span>
+                    <h1 id="chapterTitle" class="text-3xl md:text-4xl font-extrabold font-serif mt-1">The Leatherback</h1>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 italic">Нажмите на любое слово (кроме имён собственных), чтобы узнать перевод и услышать произношение</p>
                 </div>
 
@@ -259,7 +263,7 @@
                 <div class="flex items-center justify-between pb-4 border-b">
                     <div>
                         <h2 class="text-2xl font-bold font-serif">Мой словарь</h2>
-                        <p class="text-sm text-gray-500">Слова, сохраненные во время чтения 17 главы</p>
+                        <p class="text-sm text-gray-500">Слова, сохраненные во время чтения</p>
                     </div>
                     <button onclick="clearVocab()" class="text-xs text-red-500 hover:underline">Очистить весь словарь</button>
                 </div>
@@ -284,8 +288,8 @@
             <div class="max-w-2xl mx-auto space-y-6">
                 <div class="text-center space-y-2">
                     <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase">Подготовка к конкурсу</span>
-                    <h2 class="text-2xl md:text-3xl font-extrabold">Викторина по Chapter 17</h2>
-                    <p class="text-sm text-gray-500">Проверь, насколько хорошо ты понял сюжет и детали 17-й главы!</p>
+                    <h2 id="quizTitle" class="text-2xl md:text-3xl font-extrabold">Викторина по Chapter 17</h2>
+                    <p class="text-sm text-gray-500">Проверь, насколько хорошо ты понял сюжет и детали главы!</p>
                 </div>
 
                 <!-- Quiz Progress -->
@@ -352,12 +356,22 @@
                     <span class="text-[11px] font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400 block mb-1">
                         <i class="fa-solid fa-bullseye mr-1"></i> Перевод слова:
                     </span>
-                    <p id="modalContextTrans" class="text-lg font-bold text-amber-950 dark:text-amber-200">Перевод...</p>
+                    <div class="flex items-start justify-between gap-3">
+                        <p id="modalContextTrans" class="text-lg font-bold text-amber-950 dark:text-amber-200">Перевод...</p>
+                        <button onclick="speakRuWord()" class="shrink-0 w-10 h-10 rounded-full bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center active:scale-95 shadow-sm" title="Озвучить перевод по-русски">
+                            <i class="fa-solid fa-volume-high"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Sentence translation -->
                 <div id="modalSentenceBlock" class="hidden p-3 rounded-xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700 space-y-1">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 block">Предложение из текста:</span>
+                    <div class="flex items-center justify-between gap-3">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 block">Предложение из текста:</span>
+                        <button onclick="speakRuSentence()" class="shrink-0 w-9 h-9 rounded-full bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center active:scale-95 shadow-sm" title="Озвучить перевод предложения по-русски">
+                            <i class="fa-solid fa-volume-high"></i>
+                        </button>
+                    </div>
                     <p id="modalSentenceEn" class="text-sm italic font-serif"></p>
                     <p id="modalSentenceRu" class="text-sm font-medium"></p>
                 </div>
@@ -423,9 +437,23 @@
             "leatherback": {
                 context: "Кожаная черепаха (самая крупная морская черепаха в мире)",
                 meanings: ["кожаная черепаха", "кожистая черепаха"],
-                image: "https://www.sanblasfrontera.com/wp-content/uploads/2023/05/e5c98f1e-cb1b-44a5-a584-be296cb7ca2d.jpg",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6sa4-XH5uin920ce-r_BpM8m5obHMVVVmxSTMzKseBg&s=10",
                 caption: "Кожаная черепаха (Leatherback turtle) — достигает 2 метров в длину!",
                 phonetic: "/ˈleðə(r)bæk/"
+            },
+            "green turtle": {
+                context: "Зелёная черепаха",
+                meanings: ["зелёная черепаха", "суповая черепаха"],
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNSFd7oennhznET_o0p2bis95MN3GWpWN_XmGV5M1_6Q&s=10",
+                caption: "Зелёная черепаха (Green turtle)",
+                phonetic: "/ɡriːn ˈtɜːrtl/"
+            },
+            "sloth": {
+                context: "Ленивец",
+                meanings: ["ленивец", "лень (чувство)"],
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM6XVaNL1ZMTO51RiS0YYSL-qtsrj-iFi1K1likJmF_A&s=10",
+                caption: "Ленивец (Sloth)",
+                phonetic: "/sloʊθ/"
             },
             "leafcutter": {
                 context: "Муравьи-листорезы (тропические муравьи, несущие кусочки листьев)",
@@ -710,7 +738,7 @@ The turtle slipped into the water, swallowed up by the blue surf. Silver could s
 But still Silver watched, her eyes squinting against the hard, bright sun. Tendrils of hair glued to the back of her neck. She slowly stood upright, unkinking all the knots in her body where she had lain still for so long. Then she brushed some dried blood off her knees and scrambled down the tree and ran to get help.`;
 
         // Contest Quiz Questions
-        const quizQuestions = [
+        const quizQuestionsCh17 = [
             {
                 q: "Why did Silver climb the tree in the beginning of the story?",
                 options: [
@@ -813,6 +841,115 @@ But still Silver watched, her eyes squinting against the hard, bright sun. Tendr
             }
         ];
 
+        const chapter18RawText = `Chapter Eighteen. Help!
+
+‘RAFI!’ Silver raced through the camp, shouting her friend’s name at the top of her lungs. ‘RAFI!’
+
+Surely he must be home from school by now? She searched the volunteer accommodation, but the only people she saw were the middle-aged couple from Mumbai she’d spotted on her first day and the Italian called Paolo who liked rude jokes. And she had to tell Rafi first. She just had to. She even peeped through the window of Ana’s office, but she couldn’t see anything through the thick smear of dust.
+
+It was unlikely Rafi would be with her own dad, especially as Dad didn’t like to be disturbed when he was painting. But Silver was fast running out of options.
+
+She burst into his studio, out of breath and with a stitch in her side, to find him sitting on a wobbly wooden footstool with his head sunk into his hands. Propped up on the easel in front of him was his work-in-progress. Despite her hurry, Silver stifled a surprised gasp. The canvas was filled with harsh black vertical lines. With all the brilliant shades of green on offer, why hadn’t he at least painted the rainforest the correct colour?
+
+There was, however, no time to comment.
+
+‘Have you seen Rafi?’ she said, panting.
+
+‘No, treasure,’ he said, casting a weary glance towards Tickle, who sat on top of the canvas, swishing his tail ominously. ‘Although, quite frankly, I would give anything to see a fellow human being right at this moment.’
+
+In response, Tickle picked up a pot of black paint and then began to throw it across the studio.
+
+‘No!’ Dad leaped to his feet, attempting to wrestle the pot off the monkey. Splats of paint flew everywhere – landing on his white shirt, the floor, the ceiling. ‘Tickle! Drop the paint. DROP THE PAINT!’
+
+Tickle started shrieking. The kind of wild, unbridled shriek that sounded suspiciously like laughter. Dad’s face was cerise and his eyes were bulging.
+
+‘Try the surgery!’ he yelled. ‘I saw Ana rush by in that direction not too long ago. He might be there.’
+
+As Tickle and Dad continued to grapple, Silver extricated herself. Even though it was the middle of the afternoon, the surgery lights were on and, from over ten metres away, a waft of disinfectant hit her nostrils like an incoming tram.
+
+Since the door was closed, she pulled herself up and peered through the window.
+
+On one side of the operating table stood Ana. She wore vet’s scrubs, a surgical mask and she held a scalpel in her left hand. On the other side of the table, looking on studiously – but somewhat nervously – was Oscar.
+
+And on the table in front of them?
+
+It was hard to make out. Definitely not a turtle. This creature was long-limbed with coarse brown fur.
+
+‘Oh,’ Silver uttered. ‘Oh no.’
+
+She found Rafi sitting on the floor outside. Knees bunched up against his chest. He had a tennis ball in one hand that he was bouncing up and down on the earth. Sitting curled up in his lap was Speedy. A baby bottle lay discarded to one side and the little sloth had milk smeared round her mouth.
+
+‘Oh, I thought . . . I thought that was Speedy in there?’
+
+Rafi did a double take at the sight of Silver’s dress. ‘It’s a sloth my dad found earlier today in the village. She’d been electrocuted on a power line trying to rescue her baby.’
+
+‘Will . . . will she be okay?’
+
+‘The baby, no. And the mother . . .’ He threw the tennis ball to the ground with a thwack. ‘Speedy’s upset. It reminded her of what happened to her mum.’
+
+From the tear tracks on his face, it didn’t look as though Speedy was the only one who was upset. Rafi hadn’t talked much about his mother to Silver. She knew only that his Canadian mum had left them and that’s why José and the two boys had returned to Costa Rica. She also knew it was a sensitive subject.
+
+‘I remember . . . when I had emergency surgery,’ Silver said, sliding down the wall next to him. ‘I fell out of the oak tree back home and broke my arm in three places. I was so scared that I thought my heart would burst out of my chest.’ She paused. The break had been so painful that she had buried much of this memory. A bit like turtles buried their eggs. ‘But look!’ She waggled her arm. ‘I turned out fine. I’m sure the sloth will too.’
+
+It was then she remembered why she was here.
+
+‘Rafi?!’ She sat bolt upright. ‘I have to show you something on the beach. Something Very Important.’
+
+‘Now?’
+
+‘Yes, now. We can take Speedy with us.’
+
+He looked doubtful, so Silver lowered her voice. ‘A leatherback laid her eggs. Right under the tree.’
+
+‘Impossible. A leatherback hasn’t been seen on Turtle Beach—’
+
+‘For nearly two years. Yes, yes, I know!’ she said impatiently. ‘But there was one today. I saw it.’
+
+‘It was probably a green turtle. Easy mistake to make.’
+
+‘It wasn’t a green turtle! It was a leatherback, I swear! She was huge! Bigger than any turtle I’ve ever seen and she had a blue leathery back with white dots all over it. She laid her eggs right under the tree. Your tree.’ The image of how the turtle had gazed up at her was still seared on Silver’s retinas. ‘It was the most amazing thing I’ve ever seen. You’re right, Rafi. It was . . . magic.’
+
+Something in the tone of her voice made Rafi still. He rubbed his face. ‘Speedy. What do you think? Is she telling the truth?’
+
+Speedy cocked her head to one side. The splodge of milk on her chin made it difficult to take her seriously. But nevertheless Rafi seemed to be listening intently.
+
+‘Are you sure?’ His eyes widened. ‘Like really sure?’
+
+Whatever it was that Speedy said (and Silver couldn’t hear anything), Rafi jumped to his feet and slung the baby sloth round his neck.
+
+‘¡Vamos! Let’s go.’`;
+
+        const quizQuestionsCh18 = [
+            { q: "Who is Silver looking for as she races through the camp at the beginning of the text?",
+              options: ["Ana", "Oscar", "Rafi", "Paolo"], correct: 2 },
+            { q: "What animal is causing chaos inside Silver’s dad's studio by throwing paint?",
+              options: ["A monkey named Tickle", "A baby sloth named Speedy", "A green turtle", "A leatherback turtle"], correct: 0 },
+            { q: "What is Silver’s dad doing when she bursts into his studio?",
+              options: ["Trying to paint a realistic green rainforest", "Sitting on a wobbly wooden footstool with his head in his hands", "Fixing a power line in the village", "Assisting Ana in the surgery room"], correct: 1 },
+            { q: "When Silver looks through the window of the surgery, who is inside helping Ana?",
+              options: ["Rafi", "Silver's dad", "Oscar", "The Italian man named Paolo"], correct: 2 },
+            { q: "What animal is on the operating table in the surgery?",
+              options: ["A baby sea turtle", "A mother sloth that was electrocuted on a power line", "A monkey covered in black paint", "A leatherback turtle"], correct: 1 },
+            { q: "Where is Rafi sitting when Silver finally finds him outside?",
+              options: ["On the beach under a tree", "On the floor with Speedy curled in his lap", "Inside the volunteer accommodation", "On top of the art easel in the studio"], correct: 1 },
+            { q: "Why is Rafi upset according to the text?",
+              options: ["He failed his school exams", "His Canadian mum has left them", "The injured adult sloth reminded Speedy of what happened to her own mum, and he misses his own mother too", "Silver missed the turtle laying its eggs"], correct: 2 },
+            { q: "What personal childhood memory does Silver share with Rafi to comfort him?",
+              options: ["How she got lost in the rainforest on her first day", "How she fell out of an oak tree back home and broke her arm in three places", "How she once painted a canvas with harsh black vertical lines", "How she helped a leatherback turtle on the beach"], correct: 1 },
+            { q: "What Very Important thing does Silver want to show Rafi on the beach?",
+              options: ["A baby sloth learning to climb", "A monkey playing with paint pots", "A green turtle swimming in the ocean", "A leatherback turtle that laid its eggs right under the tree"], correct: 3 },
+            { q: "How long has it been since a leatherback was last seen on Turtle Beach, according to Rafi?",
+              options: ["Nearly two years", "Nearly six months", "Exactly five years", "A whole decade"], correct: 0 }
+        ];
+
+        const chapters = {
+            17: { label: "Chapter Seventeen", title: "The Leatherback", text: chapter17RawText, quiz: quizQuestionsCh17, quizTitle: "Викторина по Chapter 17" },
+            18: { label: "Chapter Eighteen", title: "Help!", text: chapter18RawText, quiz: quizQuestionsCh18, quizTitle: "Викторина по Chapter 18" }
+        };
+        let currentChapter = 17;
+        let quizQuestions = quizQuestionsCh17;
+
+
         /* ==========================================================================
            2. STATE & APPLICATION INITIALIZATION
            ========================================================================== */
@@ -824,7 +961,7 @@ But still Silver watched, her eyes squinting against the hard, bright sun. Tendr
 
         window.onload = function() {
             setTheme(localStorage.getItem('turtle_moon_theme') === 'dark' ? 'dark' : 'light');
-            renderChapter17Text();
+            loadChapter(17);
             updateVocabUI();
             initQuiz();
             
@@ -838,11 +975,11 @@ But still Silver watched, her eyes squinting against the hard, bright sun. Tendr
         /* ==========================================================================
            3. TEXT RENDERING & INTERACTIVE TOKENIZATION
            ========================================================================== */
-        function renderChapter17Text() {
+        function renderChapterText(rawText) {
             const container = document.getElementById('readerText');
             container.innerHTML = '';
 
-            const paragraphs = chapter17RawText.split('\n\n');
+            const paragraphs = rawText.split('\n\n');
             const WORD_RE = /[A-Za-zÀ-ÿ]+(?:[’'][A-Za-z]+)*/;
 
             paragraphs.forEach(paragraph => {
@@ -905,13 +1042,21 @@ But still Silver watched, her eyes squinting against the hard, bright sun. Tendr
                     span.className = 'word-token';
                     span.textContent = token;
 
-                    if (["leatherback", "leafcutter", "chameleon", "lizard", "jellyfish"].includes(cleanWord)) {
+                    // "green turtle" is looked up as one phrase
+                    let dictKey = cleanWord;
+                    let shown = m[0];
+                    if ((cleanWord === 'green' && next === 'turtle') || (cleanWord === 'turtle' && prev === 'green')) {
+                        dictKey = 'green turtle';
+                        shown = 'green turtle';
+                    }
+
+                    if (["leatherback", "leafcutter", "chameleon", "lizard", "jellyfish", "sloth", "green turtle"].includes(dictKey)) {
                         span.setAttribute('data-animal', 'true');
                     }
 
                     span.onclick = (e) => {
                         e.stopPropagation();
-                        handleWordClick(cleanWord, m[0], getSentenceAt(paragraph, tokenStart));
+                        handleWordClick(dictKey, shown, getSentenceAt(paragraph, tokenStart));
                     };
 
                     pElem.appendChild(span);
@@ -929,7 +1074,7 @@ But still Silver watched, her eyes squinting against the hard, bright sun. Tendr
         }
 
         // Proper names in chapter 17 (no translation for these)
-        const PROPER_NAMES = new Set(['silver', 'rafi', 'speedy', 'luna', 'ana', 'jose', 'oscar']);
+        const PROPER_NAMES = new Set(['silver', 'rafi', 'speedy', 'luna', 'ana', 'jose', 'oscar', 'tickle', 'paolo', 'mumbai', 'vamos']);
         function isProperName(word, prev, next) {
             if (PROPER_NAMES.has(word)) return true;
             // "Turtle Beach", "Turtle Moon" are place / book titles
@@ -1026,7 +1171,8 @@ But still Silver watched, her eyes squinting against the hard, bright sun. Tendr
                 meanings: curated ? curated.meanings : [],
                 phonetic: curated ? curated.phonetic : '',
                 image: curated ? curated.image : undefined,
-                caption: curated ? curated.caption : undefined
+                caption: curated ? curated.caption : undefined,
+                speakRu: curated ? ((curated.meanings && curated.meanings[0]) || curated.context) : ''
             };
 
             // Populate Modal UI
@@ -1038,6 +1184,7 @@ But still Silver watched, her eyes squinting against the hard, bright sun. Tendr
             // Sentence block reset
             const sentBlock = document.getElementById('modalSentenceBlock');
             sentBlock.classList.add('hidden');
+            document.getElementById('modalSentenceRu').innerText = '';
 
             // Image Handler for animals/special elements
             const imgContainer = document.getElementById('modalImageContainer');
@@ -1050,7 +1197,7 @@ But still Silver watched, her eyes squinting against the hard, bright sun. Tendr
             }
 
             updateSaveBtnState();
-            speakCurrentWord();
+            speakCurrentWord(); // English pronunciation of the clicked word
             document.getElementById('wordModal').classList.remove('hidden');
 
             // Real word translation (only if not in the curated dictionary)
@@ -1059,10 +1206,12 @@ But still Silver watched, her eyes squinting against the hard, bright sun. Tendr
                 if (myId !== wordClickId) return; // another word was clicked meanwhile
                 if (tr) {
                     activeWordData.context = tr.main;
+                    activeWordData.speakRu = tr.main;
                     activeWordData.meanings = tr.alts.length ? tr.alts : [tr.main];
                 } else {
                     activeWordData.context = 'Не удалось загрузить перевод. Проверьте интернет-соединение.';
                     activeWordData.meanings = [];
+                    activeWordData.speakRu = '';
                 }
                 document.getElementById('modalContextTrans').innerText = activeWordData.context;
                 renderMeanings(activeWordData.meanings);
@@ -1081,7 +1230,53 @@ But still Silver watched, her eyes squinting against the hard, bright sun. Tendr
         }
 
         function closeModal() {
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
             document.getElementById('wordModal').classList.add('hidden');
+        }
+
+        // Russian voice: plays ONLY when the user presses the speaker button
+        function speakRussian(text) {
+            if (!text || !('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'ru-RU';
+            utterance.rate = 0.9;
+            const ruVoice = window.speechSynthesis.getVoices().find(v => v.lang && v.lang.toLowerCase().startsWith('ru'));
+            if (ruVoice) utterance.voice = ruVoice;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function speakRuWord() {
+            if (!activeWordData) return;
+            speakRussian(activeWordData.speakRu);
+        }
+
+        function speakRuSentence() {
+            speakRussian(document.getElementById('modalSentenceRu').innerText);
+        }
+
+        const CHAPTER_ACTIVE = "chapter-link flex items-center justify-between p-3 rounded-xl bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-200 border-2 border-emerald-500/40 font-semibold shadow-sm";
+        const CHAPTER_INACTIVE = "chapter-link flex items-center justify-between p-3 rounded-xl border-2 border-transparent text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 font-semibold";
+
+        function loadChapter(n) {
+            const ch = chapters[n];
+            if (!ch) return;
+            currentChapter = n;
+            quizQuestions = ch.quiz;
+
+            document.getElementById('chapterLabel').innerText = ch.label;
+            document.getElementById('chapterTitle').innerText = ch.title;
+            document.getElementById('quizTitle').innerText = ch.quizTitle;
+            Object.keys(chapters).forEach(k => {
+                const link = document.getElementById('chapterLink' + k);
+                if (link) link.className = (Number(k) === n) ? CHAPTER_ACTIVE : CHAPTER_INACTIVE;
+            });
+
+            closeModal();
+            renderChapterText(ch.text);
+            initQuiz();
+            switchTab('reader');
+            document.getElementById('viewReader').scrollTop = 0;
         }
 
         /* ==========================================================================
