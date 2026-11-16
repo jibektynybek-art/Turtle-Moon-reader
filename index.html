@@ -228,13 +228,68 @@
                 <i class="fa-solid fa-chevron-right text-xs text-emerald-600"></i>
             </a>
 
+            <a href="#" id="chapterLink23" onclick="loadChapter(23); return false;" class="chapter-link flex items-center justify-between p-3 rounded-xl border-2 border-transparent text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 font-semibold">
+                <div class="flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">23</span>
+                    <div>
+                        <div class="text-sm leading-tight">Ana</div>
+                        <div class="text-[11px] opacity-75 font-normal">Ана</div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-xs text-emerald-600"></i>
+            </a>
+
+            <a href="#" id="chapterLink24" onclick="loadChapter(24); return false;" class="chapter-link flex items-center justify-between p-3 rounded-xl border-2 border-transparent text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 font-semibold">
+                <div class="flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">24</span>
+                    <div>
+                        <div class="text-sm leading-tight">The Decoy Egg</div>
+                        <div class="text-[11px] opacity-75 font-normal">Яйцо-обманка</div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-xs text-emerald-600"></i>
+            </a>
+
+            <a href="#" id="chapterLink25" onclick="loadChapter(25); return false;" class="chapter-link flex items-center justify-between p-3 rounded-xl border-2 border-transparent text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 font-semibold">
+                <div class="flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">25</span>
+                    <div>
+                        <div class="text-sm leading-tight">Friends Forever</div>
+                        <div class="text-[11px] opacity-75 font-normal">Друзья навсегда</div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-xs text-emerald-600"></i>
+            </a>
+
+            <a href="#" id="chapterLink26" onclick="loadChapter(26); return false;" class="chapter-link flex items-center justify-between p-3 rounded-xl border-2 border-transparent text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 font-semibold">
+                <div class="flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">26</span>
+                    <div>
+                        <div class="text-sm leading-tight">The Storm</div>
+                        <div class="text-[11px] opacity-75 font-normal">Гроза</div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-xs text-emerald-600"></i>
+            </a>
+
+            <a href="#" id="chapterLink27" onclick="loadChapter(27); return false;" class="chapter-link flex items-center justify-between p-3 rounded-xl border-2 border-transparent text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 font-semibold">
+                <div class="flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">27</span>
+                    <div>
+                        <div class="text-sm leading-tight">Lightning</div>
+                        <div class="text-[11px] opacity-75 font-normal">Молния</div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-xs text-emerald-600"></i>
+            </a>
+
             <!-- Locked Chapters (Placeholders) -->
             <div class="opacity-50 space-y-1 pt-2">
                 
                 <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-800/40 text-gray-500 text-sm">
                     <div class="flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-lg bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 flex items-center justify-center text-xs font-bold">23</span>
-                        <span>Chapter 23 (Locked)</span>
+                        <span class="w-8 h-8 rounded-lg bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 flex items-center justify-center text-xs font-bold">28</span>
+                        <span>Chapter 28 (Locked)</span>
                     </div>
                     <i class="fa-solid fa-lock text-xs"></i>
                 </div>
@@ -472,6 +527,311 @@
         
         // Dictionary database mapping clean lowercase words to rich contextual data
         const dictionaryData = {
+            "artefacts": {
+                context: "Артефакты, предметы (здесь — вещи, собранные в путешествиях)",
+                meanings: ["артефакты", "предметы старины"]
+            },
+            "crammed": {
+                context: "Набитый битком, заставленный",
+                meanings: ["набитый", "переполненный"],
+                phonetic: "/kræmd/"
+            },
+            "driftwood": {
+                context: "Коряги, выброшенные морем",
+                meanings: ["плавник", "коряга"],
+                phonetic: "/ˈdrɪft.wʊd/"
+            },
+            "reclaimed": {
+                context: "Подобранный для повторного использования",
+                meanings: ["восстановленный", "переработанный"]
+            },
+            "ginormous": {
+                context: "Громадный (gigantic + enormous, разговорное)",
+                meanings: ["громадный", "гигантский"],
+                phonetic: "/dʒaɪˈnɔːr.məs/"
+            },
+            "mahogany": {
+                context: "Красное дерево",
+                meanings: ["красное дерево", "махагони"],
+                phonetic: "/məˈhɑː.ɡə.ni/"
+            },
+            "strewn": {
+                context: "Разбросанный, усеянный",
+                meanings: ["разбросанный", "усеянный"],
+                phonetic: "/struːn/"
+            },
+            "rafters": {
+                context: "Стропила (балки под крышей); «под самую крышу»",
+                meanings: ["стропила", "балки"],
+                phonetic: "/ˈræf.tɚz/"
+            },
+            "cigar": {
+                context: "Сигара",
+                meanings: ["сигара"],
+                phonetic: "/sɪˈɡɑːr/"
+            },
+            "fangs": {
+                context: "Клыки (у змей, пауков)",
+                meanings: ["клыки"],
+                phonetic: "/fæŋz/"
+            },
+            "shuddered": {
+                context: "Содрогнулась, вздрогнула",
+                meanings: ["содрогнулась", "передёрнулась"]
+            },
+            "infallible": {
+                context: "Непогрешимый, не совершающий ошибок",
+                meanings: ["непогрешимый", "безошибочный"]
+            },
+            "bitter": {
+                context: "Озлобленный; горький",
+                meanings: ["озлобленный", "горький"],
+                phonetic: "/ˈbɪt̬.ɚ/"
+            },
+            "dangling": {
+                context: "Свисающий, болтающийся",
+                meanings: ["свисающий", "болтающийся"]
+            },
+            "nestled": {
+                context: "Уютно устроился, угнездился",
+                meanings: ["угнездился", "приютился"]
+            },
+            "ashtray": {
+                context: "Пепельница",
+                meanings: ["пепельница"],
+                phonetic: "/ˈæʃ.treɪ/"
+            },
+            "rummaged": {
+                context: "Порылась, пошарила (в поисках чего-то)",
+                meanings: ["порылась", "пошарила"]
+            },
+            "reflexes": {
+                context: "Рефлексы, быстрая реакция",
+                meanings: ["рефлексы", "реакция"],
+                phonetic: "/ˈriː.fleks.ɪz/"
+            },
+            "weave": {
+                context: "Ткать, плести; создавать",
+                meanings: ["ткать", "плести"],
+                phonetic: "/wiːv/"
+            },
+            "destined": {
+                context: "Предназначенный судьбой",
+                meanings: ["предназначенный", "суждённый"],
+                phonetic: "/ˈdes.tɪnd/"
+            },
+            "spider": {
+                context: "Паук",
+                meanings: ["паук"],
+                phonetic: "/ˈspaɪ.dɚ/"
+            },
+            "decoy": {
+                context: "Приманка, муляж (здесь — поддельное яйцо)",
+                meanings: ["приманка", "муляж"],
+                phonetic: "/ˈdiː.kɔɪ/"
+            },
+            "battery": {
+                context: "Батарейка, аккумулятор",
+                meanings: ["батарейка", "аккумулятор"],
+                phonetic: "/ˈbæt̬.ɚ.i/"
+            },
+            "claustrophobic": {
+                context: "Тесный, вызывающий клаустрофобию",
+                meanings: ["клаустрофобный", "тесный"]
+            },
+            "storeroom": {
+                context: "Кладовая",
+                meanings: ["кладовая", "склад"],
+                phonetic: "/ˈstɔːr.ruːm/"
+            },
+            "ailments": {
+                context: "Недуги, болезни",
+                meanings: ["недуги", "болезни"]
+            },
+            "lotions": {
+                context: "Лосьоны",
+                meanings: ["лосьоны"]
+            },
+            "embryo": {
+                context: "Эмбрион, зародыш",
+                meanings: ["эмбрион", "зародыш"],
+                phonetic: "/ˈem.bri.oʊ/"
+            },
+            "snout": {
+                context: "Морда, рыло (у животных)",
+                meanings: ["морда", "рыло"],
+                phonetic: "/snaʊt/"
+            },
+            "passionfruit": {
+                context: "Маракуйя",
+                meanings: ["маракуйя"],
+                phonetic: "/ˈpæʃ.ən.fruːt/"
+            },
+            "pips": {
+                context: "Косточки, семечки (фрукта)",
+                meanings: ["косточки", "семечки"],
+                phonetic: "/pɪps/"
+            },
+            "furrowing": {
+                context: "Хмуря (брови), морща лоб",
+                meanings: ["хмуря", "морща"]
+            },
+            "reverence": {
+                context: "Благоговение, глубокое почтение",
+                meanings: ["благоговение", "почтение"],
+                phonetic: "/ˈrev.ɚ.əns/"
+            },
+            "sagely": {
+                context: "Мудро, с видом знатока",
+                meanings: ["мудро", "рассудительно"],
+                phonetic: "/ˈseɪdʒ.li/"
+            },
+            "jigsaw": {
+                context: "Пазл, головоломка-мозаика",
+                meanings: ["пазл", "мозаика"],
+                phonetic: "/ˈdʒɪɡ.sɔː/"
+            },
+            "squillions": {
+                context: "Несметное множество (разговорное)",
+                meanings: ["тьма", "несметное количество"]
+            },
+            "tangled": {
+                context: "Запутанный, спутанный",
+                meanings: ["запутанный", "спутанный"],
+                phonetic: "/ˈtæŋ.ɡəld/"
+            },
+            "parakeet": {
+                context: "Попугайчик (небольшой длиннохвостый попугай)",
+                meanings: ["попугайчик"],
+                phonetic: "/ˈper.ə.kiːt/"
+            },
+            "encompass": {
+                context: "Охватывать, включать в себя",
+                meanings: ["охватывать", "заключать в себе"],
+                phonetic: "/ɪnˈkʌm.pəs/"
+            },
+            "perkier": {
+                context: "Бодрее, веселее",
+                meanings: ["бодрее", "жизнерадостнее"]
+            },
+            "languid": {
+                context: "Вялый, томный",
+                meanings: ["вялый", "томный"],
+                phonetic: "/ˈlæŋ.ɡwɪd/"
+            },
+            "soupy": {
+                context: "Душный и влажный (как суп)",
+                meanings: ["душный", "влажный", "густой"]
+            },
+            "veranda": {
+                context: "Веранда",
+                meanings: ["веранда"],
+                phonetic: "/vəˈræn.də/"
+            },
+            "impregnable": {
+                context: "Неприступный, непроницаемый",
+                meanings: ["неприступный", "непроницаемый"]
+            },
+            "adamantly": {
+                context: "Непреклонно, категорично",
+                meanings: ["непреклонно", "категорично"]
+            },
+            "skylight": {
+                context: "Окно в крыше, мансардное окно",
+                meanings: ["мансардное окно", "окно в крыше"],
+                phonetic: "/ˈskaɪ.laɪt/"
+            },
+            "flashlight": {
+                context: "Карманный фонарик",
+                meanings: ["фонарик"],
+                phonetic: "/ˈflæʃ.laɪt/"
+            },
+            "torch": {
+                context: "Фонарик (брит.); факел",
+                meanings: ["фонарик", "факел"],
+                phonetic: "/tɔːrtʃ/"
+            },
+            "raincoat": {
+                context: "Дождевик, плащ",
+                meanings: ["дождевик", "плащ"],
+                phonetic: "/ˈreɪn.koʊt/"
+            },
+            "frizz": {
+                context: "Копна вьющихся, непослушных волос",
+                meanings: ["курчавые волосы", "пышная копна"],
+                phonetic: "/frɪz/"
+            },
+            "scarecrow": {
+                context: "Пугало",
+                meanings: ["пугало"],
+                phonetic: "/ˈsker.kroʊ/"
+            },
+            "cascaded": {
+                context: "Обрушился каскадом, хлынул",
+                meanings: ["хлынул", "обрушился потоком"]
+            },
+            "drenched": {
+                context: "Промокший насквозь",
+                meanings: ["промокший", "насквозь мокрый"],
+                phonetic: "/drentʃt/"
+            },
+            "squelched": {
+                context: "Хлюпнул, чавкнул (по грязи)",
+                meanings: ["чавкнул", "хлюпнул"]
+            },
+            "rivulets": {
+                context: "Ручейки",
+                meanings: ["ручейки", "струйки"],
+                phonetic: "/ˈrɪv.jə.lets/"
+            },
+            "cannoned": {
+                context: "Ударялся с размаху, врезался",
+                meanings: ["ударялся", "врезался"]
+            },
+            "plummeted": {
+                context: "Рухнул, стремительно упал",
+                meanings: ["рухнул", "обрушился"],
+                phonetic: "/ˈplʌm.ɪ.tɪd/"
+            },
+            "scorched": {
+                context: "Обгоревший, опалённый",
+                meanings: ["опалённый", "обгоревший"],
+                phonetic: "/skɔːrtʃt/"
+            },
+            "flare": {
+                context: "Вспышка",
+                meanings: ["вспышка"],
+                phonetic: "/fler/"
+            },
+            "frenzied": {
+                context: "Неистовый, исступлённый",
+                meanings: ["неистовый", "лихорадочный"],
+                phonetic: "/ˈfren.zid/"
+            },
+            "lightning": {
+                context: "Молния",
+                meanings: ["молния"],
+                phonetic: "/ˈlaɪt.nɪŋ/"
+            },
+            "thunder": {
+                context: "Гром",
+                meanings: ["гром"],
+                phonetic: "/ˈθʌn.dɚ/"
+            },
+            "generator": {
+                context: "Генератор (электрический)",
+                meanings: ["генератор"],
+                phonetic: "/ˈdʒen.ə.reɪ.t̬ɚ/"
+            },
+            "tamandua": {
+                context: "Тамандуа (небольшой южноамериканский муравьед)",
+                meanings: ["тамандуа"]
+            },
+            "tapir": {
+                context: "Тапир",
+                meanings: ["тапир"],
+                phonetic: "/ˈteɪ.pɚ/"
+            },
             "leatherback": {
                 context: "Кожаная черепаха (самая крупная морская черепаха в мире)",
                 meanings: ["кожаная черепаха", "кожистая черепаха"],
@@ -1616,13 +1976,432 @@ Ah! So that’s what he was trying to hide on her first visit to the treehouse.
               options: ["It costs too much money", "It takes too long to ship from the US", "All the centre’s post goes directly to Ana", "His brother Oscar found out about it"], correct: 2 }
         ];
 
+        const BOOK_IMAGES = {
+            1: 'data:image/jpeg;base64,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',
+            2: 'data:image/jpeg;base64,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'
+        };
+
+        const chapter23RawText = `Chapter Twenty-Three. Ana
+
+Exactly four minutes and thirty-three seconds later, Rafi, Silver and Speedy stood outside Ana’s office door. Rafi banged on the door.
+
+‘¡Pase adelante! Come in.’
+
+Silver took a lungful of jungle air for courage and then opened the door. Immediately, she understood the issue. It was no bigger than Dad’s studio back home, but whereas his had been cluttered with art items, Ana’s office was filled to the rafters with various artefacts she had clearly picked up on her travels. Every shelf was crammed with framed photographs, well-thumbed books, plus a wide assortment of animal statues made out of reclaimed driftwood. And the ginormous mahogany desk was strewn with dog-eared envelopes, a pack of Cuban cigars and an open newspaper where someone had circled an article with an accompanying picture of some baby hatchlings.
+
+Suddenly Ana appeared from under her desk with a frown on her face. In her left hand she clutched a bill that looked like a final demand. She was followed by Morder – who snarled – and Silver jumped back in shock.
+
+Ana stared at the newspaper in disgust and then threw it into an overflowing waste-paper basket. ‘Too many thefts now.’
+
+Rafi opened his mouth to say something, but Ana raised a hand. ‘I know why you’re here.’
+
+‘You do?’ Silver asked. How? They’d only just come up with their plan.
+
+‘Quiero un momento a solas con la chica,’ Ana said to Rafi.
+
+Silver shot her friend a confused look, and he shrugged. ‘She wants some time alone with you,’ he translated.
+
+‘With me?’ Silver repeated.
+
+‘Yes, you,’ Ana said, directing her gaze at Silver, her brown eyes twinkling. ‘Unlike Rafi, I am not in the habit of talking to sloths. Not yet anyway.’
+
+Rafi cleared his throat, tightened Speedy round his neck and then stepped backwards through the door. When it closed, a pregnant pause fell over the room.
+
+Silver nervously looked around her. ¡Juepucha! Her heart almost fell out of her mouth. Above Ana’s head was a huge spider – easily the size of her hand. It sat upside down on the ceiling and appeared to be cleaning its fangs. Silver shuddered.
+
+‘You’re here about your mother.’
+
+‘My mother?’ She blinked in surprise. ‘But . . .’
+
+Ana picked a cigar from the pack, popped it in her mouth and then, without lighting it, blew out imaginary smoke. ‘It calms my nerves,’ she said, noticing Silver’s shocked expression.
+
+‘I see,’ said Silver. Not seeing at all.
+
+‘Bueno. I’m going to tell you a story,’ Ana said. ‘And this isn’t a story I tell to everyone, you understand? But since you found those leatherback eggs, you deserve to hear it.’
+
+Silver was going to say something, but then Morder bared his teeth so she decided against it.
+
+‘I don’t have children,’ Ana said, putting her feet up on the desk and leaning back with a sigh. ‘I wanted to. But it never happened.’
+
+Silver looked at Ana curiously. This wasn’t the story she had been expecting. At all. Her ears pricked up in interest.
+
+‘You see, women like me – we don’t always talk about things like this. We soldier on, putting on a brave face, pretending that everything is just fine. Como si no fuera nada. As if it were nothing.’
+
+Silver nodded. Her mum hadn’t told anyone at work about her baby struggles, and she had often wondered why not. Maybe because she preferred to be seen as strong, infallible – capable of anything. Anything, it seemed, except having a second child.
+
+‘Your mother,’ Ana said in a softer tone. ‘I knew the minute I saw her. It was the look in her eyes.’
+
+Above the desk, the spider had dropped from the ceiling – dangling on an invisible thread. Silver felt the sweat dribble down her back.
+
+‘The truth is, sparkie, it’s not easy when life pushes you on to a different path,’ Ana continued. ‘You know the worst thing you can do when that happens?’
+
+‘Er . . .’
+
+‘It’s stay bitter. Look at me.’ Ana took another drag of her unlit cigar. ‘I could have stayed lost – travelling the world for years. But what use is that? None. So you know what I did? I took those pineapples and I made something sweet for myself.’
+
+‘Isn’t the saying lemons?’ Silver asked, anxiously watching the spider’s progress as it levered itself closer and closer to Ana’s head. ‘When life gives you lemons . . .’
+
+‘Doesn’t work if you already like lemons.’ She winked. ‘You think there’s no life if you don’t have a child. Wrong. There is so much life! You just need to be more imaginative about where you find it, that’s all. Ah! Here is Xavier. Or Xavi, as he prefers to be called.’
+
+The spider landed on the desk where it nestled inside an empty ashtray. Ana paused momentarily to admire it.
+
+‘Life is creation. You hear that, sparkie? Life IS creation. And creation comes in many forms.’ She swung her feet off the desk and leaned forward, an intent expression on her face. ‘People say I saved the turtles, but I don’t see it that way. The turtles saved me. Some people have children. And some people have turtles. And me? I was always destined for turtles.’
+
+As Silver gaped at her, Ana rummaged about in one of the desk drawers before pulling out a small package wrapped in brown paper. Then, without even reading the label, she expertly launched it across the room. Just in time, Silver’s reflexes kicked in.
+
+‘For Rafi.’
+
+Silver had lost the ability to speak. All she could do was clutch the package to her heart.
+
+‘One piece of advice,’ Ana said as the spider coiled its way back up to the ceiling. ‘You weave exactly the kind of life you want for yourself. You hear that? Exactly the kind of life you want.’`;
+
+const quizQuestionsCh23 = [
+            { q: "Who stands outside Ana’s office door along with Rafi and Silver?",
+              options: ["Morder", "Speedy", "Xavier", "Xavi"], correct: 1 },
+            { q: "What animal does Ana joke about talking to?",
+              options: ["A spider", "A turtle", "A sloth", "A dog"], correct: 2 },
+            { q: "Besides dog-eared envelopes and a pack of Cuban cigars, what else is strewn across Ana’s mahogany desk?",
+              options: ["A map of the jungle", "An open newspaper with an article about baby hatchlings", "A collection of drift-wood animal statues", "A final demand bill"], correct: 1 },
+            { q: "What is the name of the large spider that drops down from the ceiling near Ana?",
+              options: ["Morder", "Speedy", "Xavier (or Xavi)", "Rafi"], correct: 2 },
+            { q: "What does Ana do with the cigar she picks from the pack?",
+              options: ["She lights it and smokes it nervously.", "She offers it to Silver to calm her down.", "She places it behind her ear.", "She pops it in her mouth and blows out imaginary smoke."], correct: 3 },
+            { q: "When Silver mentions the saying about lemons, what fruit does Ana say she used instead?",
+              options: ["Pineapples", "Mangoes", "Coconuts", "Bananas"], correct: 0 },
+            { q: "What recent discovery did Silver and her friends make that prompted Ana to share her story?",
+              options: ["A hidden treasure map in the jungle", "Leatherback eggs", "A poacher's camp", "A lost baby turtle"], correct: 1 },
+            { q: "What does Ana claim ultimately saved her life?",
+              options: ["Traveling the world", "Writing books", "Turtles", "Her collection of artefacts"], correct: 2 },
+            { q: "What object does Ana expertly launch across the room at the end of the conversation?",
+              options: ["A newspaper clipping", "A small package wrapped in brown paper", "A wooden animal statue", "An unlit cigar"], correct: 1 },
+            { q: "What is the final piece of advice Ana gives to Silver?",
+              options: ["Always protect the turtles and their hatchlings.", "Never stay bitter when life pushes you onto a different path.", "You weave exactly the kind of life you want for yourself.", "Family is the most important thing in the jungle."], correct: 2 }
+        ];
+
+        const chapter24RawText = `Chapter Twenty-Four. The Decoy Egg
+
+Hidden behind one of Silver’s favourite shrubs at the centre – a bush with dramatic tiger-striped leaves – she handed over Rafi’s parcel. He ripped off the paper to reveal a tiny battery-sized object no bigger than the tip of his thumb.
+
+‘¡Que chiva! The tracker. This is what we hide inside our pretend egg. It’s not as powerful as the one they were using for the whales, but it was the best I could afford.’ Next, he pulled out a larger object, about the size of a mobile phone. ‘This must be how we monitor it? I wonder how it works.’
+
+‘Only one way to find out,’ Silver said, plucking the tracker from Rafi’s palm. ‘Let’s try it.’
+
+As Rafi covered his eyes, Silver set off to find a hiding place. But where? To make sure the tracker worked properly, she needed to truly test it.
+
+Ah! She knew the perfect place. Silver skipped to the medicine storeroom, which was thankfully empty, and hid behind one of the locked metal trunks used to house the pills, potions, creams and lotions to treat various animal ailments. There she waited – hopefully, not for too long as it was a bit claustrophobic in here. And it smelled of turtle poo.
+
+While she hid, she could hear the familiar everyday noises of the centre continue around her. Not just the squawks and shrieks of the animals, but the characters who were at the heart of it.
+
+José letting out a loud belly laugh.
+
+Bonito shrieking a naughty word in Spanish.
+
+The familiar laugh of Paolo, the Italian volunteer, as he joked with his best friend.
+
+And then . . .
+
+‘ACHOO!’
+
+She’d recognise that sneeze anywhere. Dad must be walking past the storeroom on his way to the studio.
+
+‘Fair play, Tickle,’ she heard him say. ‘You win. I have to admit crocodile green was once a favourite of mine.’
+
+Despite the smell of poo, Silver grinned in the darkness. Crocodile green was the best. As its name suggested, it was a green the exact shade of crocodile skin. It was one of the main colours in Woodland Adventure and in the fun pictures Dad used to draw for her. Maybe now he could start to paint the jungle as it really was.
+
+After his voice faded, Silver waited, crossing her fingers that the tracker would do its magic. She had counted to almost one hundred when suddenly the door swung open and, a few footsteps later, Rafi’s face loomed over the medicine trunk.
+
+‘It works!’
+
+With some clever DIY crafting, Rafi managed to conceal the tracker inside the fake turtle egg. Luckily, it only had the teeniest of lines betraying the join.
+
+‘There,’ he declared. ‘Nobody will notice it in the dark anyway. Especially if they’re in a hurry.’
+
+The second part of the plan was trickier, given that Ana had instructed that the hatchery was not to be left unguarded at any time. They had to somehow bury the decoy with the other leatherback eggs.
+
+‘We just need to do it in plain sight,’ Silver said after the pair of them had rejected other, more elaborate options. ‘We’ll tell Santiago we’re checking on the eggs. And it’s not fibbing anyway.’
+
+This was exactly what they did. After telling Santiago that they really wanted to see the eggs again to make sure they were safe following the attempted theft, he opened the hatchery (it had a brand-new lock) and let them in.
+
+The eggs were exactly how they’d seen them last. From the outside, the shells didn’t look any different. But inside there would have been all sorts of changes. The hatchlings were growing. Soon they would have a small bump, a bit like a hook, on their snout to break open the egg from the inside. But, most significantly, inside each shell was a heartbeat.
+
+As Rafi distracted Santiago with one of his favourite turtle facts – that embryos tune into each other’s heartbeats so they are able to hatch at roughly the same time – Silver carefully placed the decoy egg among the others.
+
+‘You’re safe now, baby hatchlings,’ she whispered.
+
+Then, with one last glance, she covered the eggs back up and the pair of them set off to the beach.
+
+With the tide gently lapping against her toes, Silver watched as a crab emerged from the wet sand and peered curiously around. Rafi passed her a passionfruit and wiped a hand across his juice-stained chin.
+
+‘I hope no one steals the eggs. But if they do . . . then at least we’re prepared.’
+
+‘Nobody better dare steal them though!’ Silver spat out a mouthful of pips.
+
+Rafi murmured in agreement before furrowing his brow and turning a questioning gaze her way. The kind of gaze that left her feeling hot and bothered.
+
+‘What did Ana want with you?’`;
+
+const quizQuestionsCh24 = [
+            { q: "Where do Silver and Rafi meet to hand over the parcel?",
+              options: ["Inside the medicine storeroom", "Behind a bush with tiger-striped leaves", "By the beach near the tide", "Inside Ana’s office"], correct: 1 },
+            { q: "What two items does Rafi pull out of the parcel?",
+              options: ["A tiny battery-sized tracker and a larger monitor object", "A flashlight and a spare key", "A camera and a small walkie-talkie", "A notebook and a map"], correct: 0 },
+            { q: "Where does Silver hide to properly test if the tracker works?",
+              options: ["In the art studio", "Behind the hatchery desk", "In the medicine storeroom", "Under the mahogany desk"], correct: 2 },
+            { q: "What distinct smell does Silver notice while waiting in her hiding spot?",
+              options: ["Wet sand", "Cuban cigars", "Turtle poo", "Fresh paint"], correct: 2 },
+            { q: "Whose sneeze does Silver immediately recognize while hiding?",
+              options: ["José", "Paolo", "Bonito", "Dad"], correct: 3 },
+            { q: "What specific color does Dad mention was once a favourite of his?",
+              options: ["Forest emerald", "Crocodile green", "Jungle olive", "Turtle moss"], correct: 1 },
+            { q: "Where does Rafi conceal the tiny tracker?",
+              options: ["Inside the false bottom of a metal trunk", "Inside a passionfruit peel", "Inside the fake turtle egg", "Behind the new lock of the hatchery"], correct: 2 },
+            { q: "What excuse do Silver and Rafi give Santiago to gain entry to the hatchery?",
+              options: ["They want to clean out the old shells.", "They want to check on the eggs to make sure they are safe following the attempted theft.", "They want to feed the baby hatchlings.", "They need to test the brand-new lock."], correct: 1 },
+            { q: "What fascinating turtle fact does Rafi share to distract Santiago?",
+              options: ["Baby turtles have a special hook on their snout to break open the shell.", "Turtles can remember the magnetic field of their birthplace.", "Embryos tune into each other's heartbeats so they can hatch at roughly the same time.", "Leatherback turtles are the fastest swimmers in the ocean."], correct: 2 },
+            { q: "What fruit does Rafi pass to Silver while they are sitting on the beach?",
+              options: ["A mango", "A banana", "A passionfruit", "An orange"], correct: 2 }
+        ];
+
+        const chapter25RawText = `Chapter Twenty-Five. Friends Forever
+
+‘It was nothing,’ Silver mumbled. Her hands were sticky from the passionfruit and she wiped them on her shorts. When it became clear that Rafi was expecting an answer, she let out a long sigh. ‘Nothing you’d care about anyway.’
+
+‘What makes you say that?’ he replied, wiping his own hands on his resident sloth. ‘She’s our friend, isn’t she, Speedy? I don’t know about where you come from, but in the rainforest we care about our friends.’ Perhaps it was the reminder of home, but from nowhere a lump, the size of an egg, filled Silver’s throat. Speedy, as if sensing her sadness, climbed on to her lap and curled her paw round her fingers. The gentle thud of the sloth’s heartbeat was warm and comforting.
+
+‘You can tell us,’ Rafi said. ‘I’m a wizard at keeping secrets.’
+
+Silver thought about how Rafi had set up TAPS and his covert patrols. It was true. He was very skilled at secret-keeping.
+
+‘You know you have Oscar?’ she started, stroking the soft, fluffy bit behind Speedy’s ears. ‘Well, I don’t have any brothers or sisters. But . . . but it’s not because Mum and Dad wanted it that way.’
+
+Rafi listened with the same reverence he showed Speedy when the sloth was talking to him. As if he could hear things that were unspoken.
+
+‘They tried and tried for years. But it’s different for humans. I mean, Mum’s not like a turtle. She doesn’t lay squillions of eggs.’
+
+Silver paused, recalling the momentary joy that had pierced the Trevelon household when Dad had first painted the nursery. The same way that the sun pierced through the canopy and left pockets of sparkly gold on the forest floor.
+
+‘I think all the years of hoping and then being disappointed . . . it just got too much for her.’
+
+‘Like the mother sloth.’ Rafi nodded sagely as if pieces of a jigsaw were clicking into place inside his mind.
+
+They were clicking into place for Silver too. Was that why Ana had insisted on showing the sloth to Mum? Because they had something in common? Something that bonded the broken mothers together?
+
+As Speedy nuzzled closer to Silver’s belly, there was lots more she could have said. But, even though she trusted Rafi, how could she explain the torrent of emotions she had about her parents’ desire for another baby? How, despite knowing that her mum and dad loved her, she still sometimes felt second-best to a child who wasn’t even born? Even in her own head, it sounded wrong.
+
+‘I just wish . . . I just wish I was enough for my parents, that’s all.’
+
+Rafi didn’t reply. Probably because he was thinking how mean and selfish she was. Silver blinked against the hot sun. It was the searing bright light making her eyes water. Nothing else.
+
+‘I see,’ said Rafi at last.
+
+‘You do?’ Silver turned to him in surprise.
+
+‘Do you know how hard it is always having to follow in Oscar’s footsteps?’ Rafi said, knitting his dark brows together. ‘It’s so unfair how he gets to do all the good things at the centre.’
+
+Silver found she was clutching on to Speedy’s paw so tightly that the sloth’s claws were leaving marks in her skin. ‘It’s normal to feel like that about an older brother,’ she said. ‘But I’m not jealous of this other child. How can I be? They don’t even exist!’
+
+She let out a long sigh. These kinds of tangled thoughts only ever seemed to make her feel unhappy.
+
+Moments passed where the only sounds were the crashing of the surf and the occasional screech of a howler monkey. Eventually, Rafi reached out and grabbed hold of one of Speedy’s other paws, lightly stroking it between his fingers.
+
+‘De verdad, honestly you should have seen Speedy when I first found her . . .’ He chewed his lip as he picked the right words. ‘She was clinging on to her branch so tightly – like she was terrified to let go. I had to spend ages talking to her in my best voice to get her to trust me. It took hours. But now look at her. Look how she’s changed. Look how happy she is.’
+
+As if the sloth knew she was being talked about, she gazed up with huge brown eyes full of love and trust. It was hard to tell if she was smiling – sloth expressions didn’t change much – but it appeared that way.
+
+‘And . . . and she reminds me of you.’
+
+‘I remind you of a sloth?’ Silver laughed, despite herself. The sound unsettled a flock of parakeets, who emerged from a nearby palm tree like broken shards of a rainbow.
+
+‘Being compared to a sloth isn’t a bad thing. They’re incredibly wise and graceful animals.’
+
+‘Which doesn’t sound like me at all!’ Silver flipped her baseball cap back to front. ‘What are you trying to say?’
+
+‘When you first came here, you were hanging on just as tightly as Speedy. Not from a tree, obviously,’ he said when Silver went to interrupt him. ‘But you were holding your real self in! Pura vida. Don’t you see? The jungle has changed you. It’s freed you.’
+
+She shook her head in confusion.
+
+‘The point I’m making,’ Rafi said, sweeping his free arm round to encompass the wild rainforest fringes, ‘is that you belong here.’`;
+
+const quizQuestionsCh25 = [
+            { q: "Where do Silver and Rafi sit while having their deep conversation?",
+              options: ["Inside Ana's office", "On the beach with the tide lapping against Silver's toes", "In the medicine storeroom next to the metal trunks", "Inside Dad's art studio"], correct: 1 },
+            { q: "Whose resident animal does Rafi wipe his juice-stained hands on?",
+              options: ["Morder the dog", "Xavier the spider", "Speedy the sloth", "Oscar the parrot"], correct: 2 },
+            { q: "What does Silver compare her mother to when explaining that humans don't lay \"squillions of eggs\"?",
+              options: ["A turtle", "A howler monkey", "A parakeet", "A crab"], correct: 0 },
+            { q: "What confession does Silver ultimately share with Rafi about her parents?",
+              options: ["They are planning to move back home soon.", "They didn't want any children at all.", "They tried and tried for years to have another child, but it never happened.", "They prefer Oscar over her."], correct: 2 },
+            { q: "What is the core fear or insecurity Silver admits to feeling?",
+              options: ["She is afraid of the jungle animals.", "She wishes she was enough for her parents.", "She thinks she is a terrible secret-keeper.", "She doesn't want to leave the rainforest."], correct: 1 },
+            { q: "What personal struggle does Rafi share to show he understands?",
+              options: ["How hard it is always having to follow in his older brother Oscar's footsteps", "How he feels left out of the turtle conservation projects", "How difficult it was to learn English", "How much he misses living in the city"], correct: 0 },
+            { q: "What animal does Rafi compare Silver to?",
+              options: ["A howler monkey", "A parakeet", "A sloth", "A turtle"], correct: 2 },
+            { q: "What effect does Silver's sudden laugh have on the nearby palm tree?",
+              options: ["It makes a flock of parakeets emerge like broken shards of a rainbow.", "It startles a howler monkey into dropping a passionfruit.", "It makes Speedy climb up the trunk in a hurry.", "It causes a crab to scurry back into the wet sand."], correct: 0 },
+            { q: "How does Rafi describe Speedy when he first found her?",
+              options: ["Fast and reckless", "Clinging on to her branch so tightly, like she was terrified to let go", "Friendly and eager to be held", "Lost and looking for food"], correct: 1 },
+            { q: "What final reassuring message does Rafi give Silver about the rainforest?",
+              options: ["She needs to pack her bags and return home.", "She is just like a baby turtle trying to hatch.", "She belongs here, and the jungle has freed her.", "She has to keep all her feelings hidden inside."], correct: 2 }
+        ];
+
+        const chapter26RawText = `Chapter Twenty-Six. The Storm
+
+A couple of nights later, Silver lay on her bed, still mulling over what Rafi had said. She was self-aware enough to know that the jungle had loosened her in some way. For a start, she had stopped checking behind her knees for spiders and she didn’t care so much that her hair was a wild frizz that would put a scarecrow to shame.
+
+But, just like the half-moon in tonight’s sky, Rafi had only been semi-right. There were still a lot of things that Silver kept tight to her chest. She hadn’t told her parents about the ongoing secret patrols, for example, or about being part of the Turtle Agency Protection Society. They’d never heard about the treehouse she could now climb to as easily as she scaled their oak tree back home. (Not that they would approve of this.) But most of all, since taking them to the hatchery and being disappointed by their reaction, she hadn’t even talked about the leatherback eggs. It was clear, for some unknown reason, that they were not as invested in them as Silver was. Sometimes the words were on the tip of her tongue – just bursting to come out. Maybe she could try again? Tonight the stars were extra sparkly and Mum and Dad seemed in a perkier mood. Mum was pleased with the sloth’s progress – she had eaten a large handful of young leaves today – and, at long last, Dad’s paintings were going well.
+
+Her parents were sitting on the veranda following a light supper of empanadas. Yes. She would tell them how much the eggs meant to her. How precious all turtle life was, but especially the rare leatherback hatchlings. She could even share how she and Rafi had come up with a cunning plan to protect them. They might actually be proud of her. Sí. She would do that. Silver hopped out of bed, opened the door and then paused. Mum and Dad were leaning across the table, so close that their noses almost touched. Silver hadn’t seen them look so together for the longest of times and the image made her heart lurch.
+
+‘Is everything okay?’ Mum asked, looking up and smiling. ‘I know it’s hot tonight. Even the animals have been restless.’
+
+Silver’s brow perspired in response. With the wet season finally here, there was an extra dampness to the air tonight. Everything was soupy and languid. Everything, that was, except the mosquitos.
+
+As her parents gazed at her expectantly, now was the perfect time to open up. To share with them how wonderful it was to walk on the beach at shutterdown and to witness a wild turtle give birth. How the jungle air filled her lungs and made her feel something she’d not felt for such a long time. How it made her feel like herself.
+
+But then Dad sneezed loudly. ‘Ooops. I must have some of Tickle’s fur on my shirt.’
+
+And the moment disappeared.
+
+Silver woke to the sound of pitter-pattering. Not the familiar beat of her heart, but the rhythmic drumming of rain on the roof.
+
+Through a gap in the skylight, a drip of water landed on her face with a splat. Then another. This was followed by a fork of lightning that zigzagged across the sky. Seconds later there came a booming crash of thunder and then the sound of panicked voices. Silver looked at her watch. It was gone midnight.
+
+More thunder. Louder this time. Silver stumbled out of bed, yanked on the nearest clothes and shoved her feet into her trainers.
+
+Her parents were faster. They were already standing on the veranda with their raincoats fastened up below the chin so only the upper parts of their faces peeked out. The rain fell so heavily from the gutters that it formed an impregnable curtain shielding the three of them from the outside world. ‘What’s happening?!’ Silver glanced desperately from one to the other.
+
+‘It’s the hospital wing!’ Dad shouted over the noise of the rain. ‘The building’s been struck by lightning and all the animals have escaped!’
+
+‘In this storm?!’ Silver pictured the residents – a squirrel monkey who’d had half his tail bitten off, the tamandua, a pair of poorly howler monkeys, the tapir and, lastly, the mother sloth.
+
+‘There’s been a power cut too. José wants all hands on deck to help round them up and try to get the generator working.’ Dad grabbed a flashlight and flicked it on. It was one of the new, more powerful torches that Ana had handed out recently as an extra security measure. ‘You stay here, Silver, out of the rain.’
+
+‘But I want to come with you!’
+
+‘No!’ Mum shook her head adamantly. ‘It’ll be far safer for you here.’
+
+Then, with a quick kiss to her forehead, the pair of them disappeared through the curtain of rain and slipped into the storm.
+
+Silver paced up and down on the veranda. This way. That way. Back again. All the while, her gut twisted and churned.
+
+No! She couldn’t just wait here and do nothing. Another flash of lightning zigzagged through the sky, momentarily highlighting the treeline. She had to help.
+
+She pulled on her raincoat, rammed on her baseball cap and, with a deep breath, stepped headfirst into the storm.`;
+
+const quizQuestionsCh26 = [
+            { q: "What are two signs that the jungle has already \"loosened\" Silver up?",
+              options: ["She loves eating empanadas and sleeping outside.", "She stopped checking behind her knees for spiders and stopped caring so much about her wild, frizzy hair.", "She learned to speak fluent Spanish and stopped wearing her baseball cap.", "She adopted a pet sloth and became friends with Morder."], correct: 1 },
+            { q: "Which secret had Silver NOT told her parents yet?",
+              options: ["That she had lost her trainers in the jungle", "That she was part of the Turtle Agency Protection Society and went on secret patrols", "That Ana gave her a pack of Cuban cigars", "That she wanted to move back home immediately"], correct: 1 },
+            { q: "Why was Silver's mum in a perkier mood earlier that evening?",
+              options: ["The wet season had finally ended.", "She received good news from home.", "The sloth had eaten a large handful of young leaves that day.", "She finished painting the studio."], correct: 2 },
+            { q: "What had Silver's parents eaten for their light supper on the veranda?",
+              options: ["Passionfruit and mangoes", "Tortillas and beans", "Empanadas", "Fresh fish"], correct: 2 },
+            { q: "What interrupted the quiet moment just as Silver was about to open up to her parents?",
+              options: ["A loud crash of thunder", "Dad sneezing loudly because of Tickle's fur on his shirt", "José calling them for an emergency meeting", "A mosquito biting Silver on the cheek"], correct: 1 },
+            { q: "What woke Silver up past midnight?",
+              options: ["The sound of rain drumming on the roof and a drip landing on her face through a gap in the skylight", "Rafi banging on her bedroom door", "Howler monkeys shrieking right outside her window", "Her parents shaking her awake"], correct: 0 },
+            { q: "What disaster struck the centre during the storm?",
+              options: ["The hatchery flooded completely.", "A tree fell onto the art studio.", "The hospital wing was struck by lightning, causing a power cut and letting all the animals escape.", "Poachers broke through the main gate."], correct: 2 },
+            { q: "Which of the following animals is NOT mentioned as one of the escaped hospital residents Silver pictures?",
+              options: ["A squirrel monkey with half his tail bitten off", "A tamandua and a tapir", "A pair of poorly howler monkeys and the mother sloth", "A giant jungle spider and a baby leatherback turtle"], correct: 3 },
+            { q: "What did Dad grab before heading out into the rain?",
+              options: ["A rope and a large net", "One of the new, more powerful flashlights Ana had handed out recently", "A spare raincoat for Silver", "A walkie-talkie to contact José"], correct: 1 },
+            { q: "What does Silver decide to do after her parents tell her to stay behind?",
+              options: ["She goes back to bed and tries to sleep through the thunder.", "She waits patiently on the veranda until the power comes back on.", "She puts on her raincoat and baseball cap and steps headfirst into the storm to help.", "She runs to the hatchery to check on the decoy egg."], correct: 2 }
+        ];
+
+        const chapter27RawText = `Chapter Twenty-Seven. Lightning
+
+The rain cascaded from the heavens in one giant waterfall. Within seconds, Silver was drenched. It wasn’t cold – not like the rain back home. It was warm and tropical.
+
+[BOOK_IMG:1]
+
+She slipped and slid across the sanctuary site. Underfoot the ground was muddy and once or twice her trainer squelched stuck before she yanked it back out again.
+
+The rain was so heavy she could barely see a thing. It fell down her face, ran between her shoulder blades in rivulets and washed away the sweat that clung to her skin. And the noise! How the water tumbled its way through the tree canopy, cannoned off the leaves and plummeted to the floor in one huge roar.
+
+‘MUM? DAD!’ Silver cried, her voice sounding incredibly small.
+
+Where were they? With the generator down, the site was pitch-black and she could barely see a thing. She fumbled blindly for her torch.
+
+‘Ink splats!’
+
+She’d left it at home.
+
+A searing flash of lightning. Silver blinked in the sudden brightness, trying desperately to get her bearings.
+
+But yes. There was the education centre and some figures running. Torchlights cutting lasers through the rain. Muffled shouts in Spanish. Too rushed and distorted to understand.
+
+[BOOK_IMG:2]
+
+‘MUM?’
+
+Was that her? Sprinting towards the hospital wing? The site was plunged into darkness again. But at least Silver knew the rough direction to go now. As she ran, another crash of thunder rocked the skies. She paused before pushing herself onwards. Not far now.
+
+Silver yanked open the door.
+
+But there was nobody in the hospital wing. Just empty cages and the smell of scorched wood.
+
+More thunder. The loudest she had ever heard in her life. As if the sky had collapsed in on itself. Should she head back home? Silver hesitated. But what about the turtles?
+
+What about Luna? She had to check.
+
+The rain was in her hair, her ears, her nose, her eyes. It was impossible to see even one footstep in front of her. But then, a flare of lightning. Everything momentarily bright. And, oh, thank goodness! Silver let out a cry of relief. There was Luna, hiding in her tank under the surface of the water.
+
+‘It’s okay, Luna,’ she whispered. ‘You’re safe.’
+
+Silver stumbled back round to the front of the surgery. Was that José? And a flash of green feathers. Bonito must be perched on his shoulder. At least the parrot was safe. And, over the noise of the rain, a few frenzied barks. Then Ana’s voice. Yelling out rushed orders to coordinate the search party.
+
+A boom of thunder. Torchlight. Another laser beam cutting across the site.
+
+Who was that other figure?
+
+Was it Santiago?
+
+An icy chill ran through Silver’s body.
+
+. . . Because if Santiago was here . . .
+
+. . . then who was guarding the eggs?`;
+
+const quizQuestionsCh27 = [
+            { q: "How did the tropical rain feel to Silver compared to the rain back home?",
+              options: ["Freezing and icy", "Warm", "Light and misty", "Like sharp needles"], correct: 1 },
+            { q: "What happened to Silver's trainers as she ran across the muddy sanctuary site?",
+              options: ["She lost one in a deep puddle.", "They got stuck in the mud once or twice before she yanked them out.", "The laces snapped from the water.", "They filled with sand from the beach."], correct: 1 },
+            { q: "What did Silver realize when she fumbled blindly for her torch?",
+              options: ["The batteries were dead.", "She had dropped it near the veranda.", "She had left it at home.", "Rafi had borrowed it earlier."], correct: 2 },
+            { q: "What phrase did Silver exclaim when she realized she didn't have her torch?",
+              options: ["\"¡Juepucha!\"", "\"Ink splats!\"", "\"Oh, fiddlesticks!\"", "\"Not again!\""], correct: 1 },
+            { q: "How did Silver manage to get her bearings in the pitch-black sanctuary?",
+              options: ["By following the sound of José's laugh", "By using the glow from her watch", "During a searing flash of lightning that briefly lit up the education centre and running figures", "By holding onto a rope stretched between the buildings"], correct: 2 },
+            { q: "What did Silver find when she yanked open the door to the hospital wing?",
+              options: ["Her parents tending to an injured sloth", "Nobody—just empty cages and the smell of scorched wood", "Santiago hiding from the thunder", "All the escaped animals huddled in a corner"], correct: 1 },
+            { q: "Where did Silver find Luna during another flare of lightning?",
+              options: ["Wandering toward the beach", "Hiding in her tank under the surface of the water", "Sheltering beneath the education centre veranda", "Next to Ana's office door"], correct: 1 },
+            { q: "Which bird did Silver spot perched on José's shoulder?",
+              options: ["A parakeet", "Speedy", "Bonito the parrot", "Tickle"], correct: 2 },
+            { q: "What was Ana doing over the noise of the rain and frenzied barks?",
+              options: ["Trying to fix the broken generator", "Yelling out rushed orders to coordinate the search party", "Locking up the hatchery door", "Calling for Morder to come inside"], correct: 1 },
+            { q: "Why did an icy chill run through Silver's body when she spotted Santiago?",
+              options: ["She thought he had been struck by lightning.", "She realized he was helping poachers steal the animals.", "She realized that if Santiago was at the search, nobody was guarding the turtle eggs.", "She thought he was angry that she had left her house."], correct: 2 }
+        ];
+
         const chapters = {
             17: { label: "Chapter Seventeen", title: "The Leatherback", text: chapter17RawText, quiz: quizQuestionsCh17, quizTitle: "Викторина по Chapter 17" },
             18: { label: "Chapter Eighteen", title: "Help!", text: chapter18RawText, quiz: quizQuestionsCh18, quizTitle: "Викторина по Chapter 18" },
             19: { label: "Chapter Nineteen", title: "New Life", text: chapter19RawText, quiz: quizQuestionsCh19, quizTitle: "Викторина по Chapter 19" },
             20: { label: "Chapter Twenty", title: "A Miracle", text: chapter20RawText, quiz: quizQuestionsCh20, quizTitle: "Викторина по Chapter 20" },
             21: { label: "Chapter Twenty-One", title: "Waiting, Waiting, Waiting", text: chapter21RawText, quiz: quizQuestionsCh21, quizTitle: "Викторина по Chapter 21" },
-            22: { label: "Chapter Twenty-Two", title: "A Plan Hatched", text: chapter22RawText, quiz: quizQuestionsCh22, quizTitle: "Викторина по Chapter 22" }
+            22: { label: "Chapter Twenty-Two", title: "A Plan Hatched", text: chapter22RawText, quiz: quizQuestionsCh22, quizTitle: "Викторина по Chapter 22" },
+            23: { label: "Chapter Twenty-Three", title: "Ana", text: chapter23RawText, quiz: quizQuestionsCh23, quizTitle: "Викторина по Chapter 23" },
+            24: { label: "Chapter Twenty-Four", title: "The Decoy Egg", text: chapter24RawText, quiz: quizQuestionsCh24, quizTitle: "Викторина по Chapter 24" },
+            25: { label: "Chapter Twenty-Five", title: "Friends Forever", text: chapter25RawText, quiz: quizQuestionsCh25, quizTitle: "Викторина по Chapter 25" },
+            26: { label: "Chapter Twenty-Six", title: "The Storm", text: chapter26RawText, quiz: quizQuestionsCh26, quizTitle: "Викторина по Chapter 26" },
+            27: { label: "Chapter Twenty-Seven", title: "Lightning", text: chapter27RawText, quiz: quizQuestionsCh27, quizTitle: "Викторина по Chapter 27" }
         };
         let currentChapter = 17;
         let quizQuestions = quizQuestionsCh17;
@@ -1662,6 +2441,20 @@ Ah! So that’s what he was trying to hide on her first visit to the treehouse.
 
             paragraphs.forEach(paragraph => {
                 // Check for book illustration marker
+                const imgMarker = paragraph.trim().match(/^\[BOOK_IMG:(\d+)\]$/);
+                if (imgMarker && BOOK_IMAGES[imgMarker[1]]) {
+                    const bImg = document.createElement('div');
+                    bImg.className = "my-8 rounded-2xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700 bg-black";
+                    bImg.innerHTML = `
+                        <img src="${BOOK_IMAGES[imgMarker[1]]}" alt="Иллюстрация из книги" class="w-full h-auto object-cover max-h-[420px]">
+                        <div class="p-3 text-center text-xs italic text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800/80">
+                            Иллюстрация к книге «Turtle Moon» — гроза над заповедником
+                        </div>
+                    `;
+                    container.appendChild(bImg);
+                    return;
+                }
+
                 if (paragraph.trim() === '[BOOK_ILLUSTRATION]') {
                     const imgDiv = document.createElement('div');
                     imgDiv.className = "my-8 rounded-2xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700 bg-black/5";
@@ -1753,7 +2546,7 @@ Ah! So that’s what he was trying to hide on her first visit to the treehouse.
         }
 
         // Proper names in chapter 17 (no translation for these)
-        const PROPER_NAMES = new Set(['silver', 'rafi', 'speedy', 'luna', 'ana', 'jose', 'oscar', 'tickle', 'paolo', 'mumbai', 'vamos', 'santiago', 'gustavo', 'marina', 'rio']);
+        const PROPER_NAMES = new Set(['silver', 'rafi', 'speedy', 'luna', 'ana', 'jose', 'oscar', 'tickle', 'paolo', 'mumbai', 'vamos', 'santiago', 'gustavo', 'marina', 'rio', 'morder', 'xavier', 'xavi', 'bonito']);
         function isProperName(word, prev, next) {
             if (PROPER_NAMES.has(word)) return true;
             // "Turtle Beach", "Turtle Moon" are place / book titles
